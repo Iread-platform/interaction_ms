@@ -8,7 +8,7 @@ ENV ASPNETCORE_URLS="http://interaction_ms"
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-ENV ConnectionStrings:DefaultConnection="Server=mysql_interaction_ms;Database=interaction_ms_db;Uid=codavia;Pwd=cod@v!@; convert zero datetime=True"s
+ENV ConnectionStrings:DefaultConnection="Server=mysql_interaction_ms;Database=interaction_ms_db;Uid=codavia;Pwd=cod@v!@; convert zero datetime=True"
 
 ENV ConsulConfig:Host="http://consul:8500"
 
