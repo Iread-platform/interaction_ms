@@ -7,6 +7,7 @@ namespace iread_interaction_ms.Web.Util
 {
     public class ErrorMessage
     {
+        public const String AUDIO_ALREADY_EXIST = "Audio already exist.";
         public const String Attachment_ID_IS_REQUIRED = "Attachment id is required.";
         public const String INVALID_Attachment_ID_VALUE = "Invalid attachment id value.";
         public const String Interaction_ID_IS_REQUIRED = "Interaction id is required.";

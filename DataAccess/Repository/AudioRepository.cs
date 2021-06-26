@@ -48,5 +48,10 @@ namespace iread_interaction_ms.DataAccess.Repository
             _context.Update(oldAudio);
             _context.SaveChanges();
         }
+
+        public async Task<bool> IsSInteractionHasAudio(int  interactionId)
+        {
+            return _context.Audios.Any(a => a.InteractionId == interactionId);
+        }
     }
 }
