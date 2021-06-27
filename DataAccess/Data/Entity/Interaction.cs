@@ -13,6 +13,19 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int InteractionId { get; set; }
+        
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
+        public int StoryId { get; set; }
+        
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
+        public int StudentId { get; set; }
+        
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
+        public int PageId { get; set; }
+
 
     }
 }
