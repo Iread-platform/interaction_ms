@@ -7,6 +7,7 @@ namespace iread_interaction_ms.DataAccess.Repository
     {
         private readonly AppDbContext _context;
         private IInteractionRepo _interactionRepo;
+        private IAudioRepository _audioRepository;
 
         public PublicRepository(AppDbContext context)
         {
@@ -17,6 +18,14 @@ namespace iread_interaction_ms.DataAccess.Repository
             get
             {
                 return _interactionRepo ??= new InteractionRepo(_context);
+            }
+        }
+
+        public IAudioRepository GetAudioRepository
+        {
+            get
+            {
+                return _audioRepository ??= new AudioRepository(_context);
             }
         }
     }

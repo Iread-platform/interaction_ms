@@ -24,6 +24,7 @@ namespace iread_interaction_ms.DataAccess.Data
 
         //entities
         public DbSet<Interaction> Interactions { get; set; }
+        public DbSet<Audio> Audios { get; set; }
 
     }
 }

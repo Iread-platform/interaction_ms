@@ -27,5 +27,8 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         public int PageId { get; set; }
 
 
+        [Required]
+        public int StoryId { get; set; }
+
     }
 }
