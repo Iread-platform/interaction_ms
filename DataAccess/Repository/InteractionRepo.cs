@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
@@ -16,9 +17,9 @@ namespace iread_interaction_ms.DataAccess.Repository
              _context = dbContext;
          }
 
-         public Interaction Get(int id)
+         public async Task<Interaction> Get(int id)
          {
-            return _context.Interactions.Find(id);
+            return await _context.Interactions.FindAsync(id);
          }
 
          public void Update(int id, Interaction interaction)

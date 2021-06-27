@@ -10,7 +10,8 @@ namespace iread_interaction_ms.Web.Service
     {
         Task<T> GetAsync<T>(string serviceName, string requestUri);
         Task<T> PostBodyAsync<T>(string serviceName, string requestUri, Object obj);
-        Task<T> PostFormAsync<T>(string serviceName, string requestUri, Dictionary<string, string> parameters, List<IFormFile>? attachments);
+        Task<T> PostFormAsync<T>(string serviceName, string requestUri, Dictionary<string, string> parameters,
+            List<IFormFile>? attachments);
         Task<T> PutBodyAsync<T>(string serviceName, string requestUri, Object obj);
         Task<T> PutFormAsync<T>(string serviceName, string requestUri, Dictionary<string, string> parameters, List<IFormFile>? attachments);
     }

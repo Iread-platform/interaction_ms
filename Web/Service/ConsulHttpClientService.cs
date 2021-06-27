@@ -57,7 +57,8 @@ namespace iread_interaction_ms.Web.Service
 
         }
 
-        public async Task<T> PostFormAsync<T>(string serviceName, string requestUri, Dictionary<string, string> parameters, List<IFormFile>? attachments)
+        public async Task<T> PostFormAsync<T>(string serviceName, string requestUri,
+            Dictionary<string, string> parameters, List<IFormFile>? attachments)
         {
             var uri = await GetRequestUriAsync(serviceName, requestUri);
 

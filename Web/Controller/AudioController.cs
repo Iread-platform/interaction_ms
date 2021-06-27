@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using iread_interaction_ms.DataAccess.Data.Entity;
+using iread_interaction_ms.Web.Dto.AttachmentDto;
 using iread_interaction_ms.Web.Dto.AudioDto;
 using iread_interaction_ms.Web.Service;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +17,16 @@ namespace iread_interaction_ms.Web.Controller
     {
         private readonly IMapper _mapper;
         private readonly AudioServices _audioServices;
+        private readonly InteractionServices _interactionServices;
+        private readonly IConsulHttpClientService _consulHttpClient;
+        private readonly string _attachmentsMs = "attachment_ms";
 
-        public AudioController(AudioServices audioServices, IMapper mapper)
+        public AudioController(AudioServices audioServices, IMapper mapper, InteractionServices interactionServices, IConsulHttpClientService consulHttpClient)
         {
             _audioServices = audioServices;
             _mapper = mapper;
+            _interactionServices = interactionServices;
+            _consulHttpClient = consulHttpClient;
         }
         
         // GET: api/audio/get/1
@@ -26,7 +35,7 @@ namespace iread_interaction_ms.Web.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAudio([FromRoute]int id)
         {
-            Audio audio = await _audioServices.GetAudioByID(id);
+            Audio audio = await _audioServices.GetAudioById(id);
 
             if (audio == null)
             {
@@ -40,7 +49,7 @@ namespace iread_interaction_ms.Web.Controller
         [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostAudio([FromBody]AudioCreateDto audioCreateDto)
+        public async Task<IActionResult> PostAudio([FromForm]AudioCreateDto audioCreateDto)
         {
             if (audioCreateDto == null)
             {
@@ -60,8 +69,26 @@ namespace iread_interaction_ms.Web.Controller
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
             
+            //Get audio interaction's
+            Interaction interaction = await _interactionServices.GetInteractionById(audioEntity.InteractionId);
+            
+            
             //TODO insert attachment before insert audio
 
+            var parameters = new Dictionary<string, string>() { {"StoryId",interaction.StoryId.ToString()} };
+
+            List<IFormFile> attachments = new List<IFormFile>();
+            attachments.Add(audioCreateDto.Attachment);
+            try
+            {
+                await _consulHttpClient.PostFormAsync<AttachmentsWithStoryId>(_attachmentsMs, "api/Attachment",
+                    parameters, attachments?.ToList());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             if (!_audioServices.InsertAudio(audioEntity))
             {
                 return BadRequest();

@@ -14,7 +14,7 @@ namespace iread_interaction_ms.Web.Service
             _publicRepository = publicRepository;
         }
 
-        public async Task<Audio> GetAudioByID(int id)
+        public async Task<Audio> GetAudioById(int id)
         {
             return await _publicRepository.GetAudioRepository.GetById(id);
         }

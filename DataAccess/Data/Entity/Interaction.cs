@@ -14,5 +14,8 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required]
         public int InteractionId { get; set; }
 
+        [Required]
+        public int StoryId { get; set; }
+
     }
 }
