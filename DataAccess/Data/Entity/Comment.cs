@@ -25,7 +25,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "The InteractionId field is required.")]
         public int InteractionId { get; set; }
-        
         public Interaction Interaction { get; set; }
         
     }

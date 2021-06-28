@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data;
 using iread_interaction_ms.DataAccess.Data.Entity;
@@ -14,6 +15,10 @@ namespace iread_interaction_ms.DataAccess.Repository
         public CommentRepository(AppDbContext context)
         {
             _context = context;
+        }
+
+        public CommentRepository()
+        {
         }
 
         public async Task<Comment> GetById(int id)
@@ -45,14 +50,14 @@ namespace iread_interaction_ms.DataAccess.Repository
             return _context.Comments.Any(c => c.CommentId == id);
         }
 
-        public void Update(int id, Comment comment, Comment oldComment)
+        public void Update(Comment comment)
         {
-            _context.Entry(oldComment).State = EntityState.Modified;
-            _context.Comments.Attach(oldComment);
-            _context.Update(oldComment);
+            _context.Comments.Attach(comment);
+            _context.Entry(comment).State = EntityState.Modified;
+            _context.Entry(comment).Reference(c => c.Interaction).IsModified = false;
+            _context.Entry(comment).Property(c => c.InteractionId).IsModified = false;
             _context.SaveChanges();
-        }
 
-      
-    }
+        }
+    }            
 }

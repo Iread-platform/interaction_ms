@@ -22,6 +22,7 @@ namespace iread_interaction_ms.Web.Profile
             //Audio Mapper
             CreateMap<Comment, CommentDto>().ReverseMap();
             CreateMap<CommentCreateDto, Comment>().ReverseMap();
+            CreateMap<CommentUpdateDto, Comment>().ReverseMap();
            
             
         }

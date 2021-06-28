@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using iread_interaction_ms.Web.Util;
 using iread_interaction_ms.Web.Dto.CommentDto;
+using System;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -71,20 +72,55 @@ namespace iread_interaction_ms.Web.Controller
             {
                 return BadRequest();
             }
+
+            AddValidationLogic(commentCreateDto);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
-
 
             Comment comment = _mapper.Map<Comment>(commentCreateDto);
             if (!_commentsService.Insert(comment))
             {
                 return BadRequest();
             }
-
             return CreatedAtAction("GetById", new { id = comment.CommentId }, _mapper.Map<CommentDto>(comment));
         }
 
+        [HttpPut("{id}/update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] CommentUpdateDto comment, [FromRoute] int id)
+        {
+             if (comment == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+
+            if (!_commentsService.Exists(id))
+            {
+                return NotFound();
+            }
+            Comment commentEntity = _mapper.Map<Comment>(comment);
+            commentEntity.CommentId = id;
+            _commentsService.Update(commentEntity);
+            return NoContent();
+        }
+
+
+    private void AddValidationLogic(CommentCreateDto comment)
+        {
+            ModelState.Clear();
+            // if (String.IsNullOrEmpty(tagDto.Title))
+            // {
+            //     ModelState.AddModelError("Tag", "could not add/update tag because title is empty");
+            //     continue;
+            // }
+
+        }
     }
 }

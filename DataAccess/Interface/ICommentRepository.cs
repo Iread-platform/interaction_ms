@@ -13,7 +13,7 @@ namespace iread_interaction_ms.DataAccess.Interface
 
         public bool Exists(int id);
 
-        public void Update(int id, Comment comment, Comment oldComment);
+        public void Update(Comment comment);
         public Task<Comment> GetByInteractionId(int id);
     }
 }

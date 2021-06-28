@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
+using iread_interaction_ms.Web.Dto.CommentDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.Web.Service
@@ -37,6 +39,14 @@ namespace iread_interaction_ms.Web.Service
             }
         }
 
-       
+        public bool Exists(int id)
+        {
+            return _publicRepository.GetCommentsRepo.Exists(id);
+        }
+
+        internal void Update(Comment comment)
+        {
+            _publicRepository.GetCommentsRepo.Update(comment);
+        }
     }
 }

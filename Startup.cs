@@ -64,6 +64,17 @@ namespace iread_interaction_ms
             services.AddConsulConfig(Configuration);
             services.AddHttpClient<IConsulHttpClientService,ConsulHttpClientService>();
 
+
+            // return only msg of errors as a list when get invalid ModelState in background
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
+                .ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                var errors = context.ModelState.Values.SelectMany(x => x.Errors.Select (y => y.ErrorMessage));
+                    return new BadRequestObjectResult(errors);
+                };
+           });
             
             // for swagger
             services.AddSwaggerGen(c =>
