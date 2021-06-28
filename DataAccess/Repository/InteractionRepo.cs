@@ -6,8 +6,7 @@ using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 
 
-namespace iread_interaction_ms.DataAccess.Repository
-     {
+namespace iread_interaction_ms.DataAccess.Repository{
      class InteractionRepo: IInteractionRepo
      {
          private readonly AppDbContext _context;
@@ -17,7 +16,7 @@ namespace iread_interaction_ms.DataAccess.Repository
              _context = dbContext;
          }
 
-         public async Task<Interaction> Get(int id)
+         public async Task<Interaction> GetById(int id)
          {
             return await _context.Interactions.FindAsync(id);
          }
@@ -28,7 +27,7 @@ namespace iread_interaction_ms.DataAccess.Repository
              _context.SaveChanges();
          }
 
-         public async void  Add(Interaction interaction)  
+         public async void  Insert(Interaction interaction)  
          {
              await _context.Interactions.AddAsync(interaction);
              await _context.SaveChangesAsync();
@@ -52,4 +51,4 @@ namespace iread_interaction_ms.DataAccess.Repository
              return _context.Interactions.Any(interaction => interaction.InteractionId.Equals(id));
          }
      }
-     }
+}

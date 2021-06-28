@@ -2,6 +2,6 @@
 {
     public class InteractionDto
     {
-        
+        public int InteractionId { get; set; }
     }
 }

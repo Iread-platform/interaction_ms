@@ -5,31 +5,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.Web.Service
 {
-    public class InteractionsService
+    public class CommentsService
     {
         private readonly IPublicRepository _publicRepository;
 
-        public InteractionsService(IPublicRepository publicRepository)
+        public CommentsService(IPublicRepository publicRepository)
         {
             _publicRepository = publicRepository;
         }
-        
-        public async Task<Interaction> GetInteractionById(int id)
-        {
-            return await _publicRepository.GetInteractionRepo.GetById(id);
-        }
 
-
-         public async Task<Interaction> GetById(int id)
+        public async Task<Comment> GetById(int id)
         {
-            return await _publicRepository.GetInteractionRepo.GetById(id);
+            return await _publicRepository.GetCommentsRepo.GetById(id);
         }
         
-        public bool Insert(Interaction interaction)
+        public async Task<Comment> GetByInteractionId(int id)
+        {
+            return await _publicRepository.GetCommentsRepo.GetByInteractionId(id);
+        }
+
+        public bool Insert(Comment comment)
         {
             try
             {
-                _publicRepository.GetInteractionRepo.Insert(interaction);
+                _publicRepository.GetCommentsRepo.Insert(comment);
                 return true;
             }
             catch (DbUpdateConcurrencyException)
@@ -37,5 +36,7 @@ namespace iread_interaction_ms.Web.Service
                 return false;
             }
         }
+
+       
     }
 }

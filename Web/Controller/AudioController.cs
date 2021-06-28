@@ -17,15 +17,17 @@ namespace iread_interaction_ms.Web.Controller
     {
         private readonly IMapper _mapper;
         private readonly AudioServices _audioServices;
-        private readonly InteractionServices _interactionServices;
+        private readonly InteractionsService _interactionsService;
         private readonly IConsulHttpClientService _consulHttpClient;
         private readonly string _attachmentsMs = "attachment_ms";
 
-        public AudioController(AudioServices audioServices, IMapper mapper, InteractionServices interactionServices, IConsulHttpClientService consulHttpClient)
+        public AudioController(AudioServices audioServices, IMapper mapper,
+         InteractionsService interactionsService,
+          IConsulHttpClientService consulHttpClient)
         {
             _audioServices = audioServices;
             _mapper = mapper;
-            _interactionServices = interactionServices;
+            _interactionsService = interactionsService;
             _consulHttpClient = consulHttpClient;
         }
         
@@ -70,7 +72,7 @@ namespace iread_interaction_ms.Web.Controller
             }
             
             //Get audio interaction's
-            Interaction interaction = await _interactionServices.GetInteractionById(audioEntity.InteractionId);
+            Interaction interaction = await _interactionsService.GetInteractionById(audioEntity.InteractionId);
             
             
             //TODO insert attachment before insert audio

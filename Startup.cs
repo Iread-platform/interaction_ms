@@ -73,8 +73,10 @@ namespace iread_interaction_ms
             
             // Inject the public repository
             services.AddScoped<IPublicRepository, PublicRepository>();
+            
             services.AddScoped<AudioServices>();
-            services.AddScoped<InteractionServices>();
+            services.AddScoped<CommentsService>();
+            services.AddScoped<InteractionsService>();
             
             IMapper mapper = new MapperConfiguration(config=>{
                 config.AddProfile<AutoMapperProfile>();

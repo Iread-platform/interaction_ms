@@ -6,11 +6,11 @@ namespace iread_interaction_ms.DataAccess.Interface
 {
     public interface IInteractionRepo
     {
-         Task<Interaction> Get(int id);
+         Task<Interaction> GetById(int id);
 
         void Update(int id, Interaction interaction);
        
-        void Add(Interaction interaction);
+        void Insert(Interaction interaction);
 
         IEnumerable<Interaction> Get();
 
