@@ -37,12 +37,10 @@ namespace iread_interaction_ms.DataAccess.Repository
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(Comment comment)
         {
-            var toRemove = new Comment() { CommentId = id };
-            _context.Comments.Attach(toRemove);
-            _context.Comments.Remove(toRemove);
-            _context.SaveChangesAsync();
+            _context.Comments.Remove(comment);
+            _context.SaveChanges();
         }
 
         public bool Exists(int id)

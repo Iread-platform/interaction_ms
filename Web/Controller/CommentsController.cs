@@ -112,6 +112,27 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
+
+        // DELETE: api/interaction/comment/5/delete
+        [HttpDelete("{id}/delete")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+            var comment = _commentsService.GetById(id).Result;
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+           _commentsService.Delete(comment);
+            return NoContent();
+        }
+
+
+
     private void AddValidationLogic(CommentCreateDto comment)
         {
             ModelState.Clear();

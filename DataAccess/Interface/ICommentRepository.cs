@@ -9,7 +9,7 @@ namespace iread_interaction_ms.DataAccess.Interface
         
         public void Insert(Comment comment);
         
-        public void Delete(int id);
+        public void Delete(Comment comment);
 
         public bool Exists(int id);
 
