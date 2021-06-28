@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using iread_interaction_ms.Web.Util;
 using iread_interaction_ms.Web.Dto.CommentDto;
 using System;
+using System.Collections.Generic;
+using iread_interaction_ms.DataAccess.Data.Type;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -73,13 +75,14 @@ namespace iread_interaction_ms.Web.Controller
                 return BadRequest();
             }
 
-            AddValidationLogic(commentCreateDto);
+            Comment comment = _mapper.Map<Comment>(commentCreateDto);
+            ValidationLogic(comment);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
 
-            Comment comment = _mapper.Map<Comment>(commentCreateDto);
+           
             if (!_commentsService.Insert(comment))
             {
                 return BadRequest();
@@ -96,6 +99,8 @@ namespace iread_interaction_ms.Web.Controller
                 return BadRequest();
             }
 
+            Comment commentEntity = _mapper.Map<Comment>(comment);
+            ValidationLogic(commentEntity);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
@@ -105,7 +110,7 @@ namespace iread_interaction_ms.Web.Controller
             {
                 return NotFound();
             }
-            Comment commentEntity = _mapper.Map<Comment>(comment);
+            
             commentEntity.CommentId = id;
             _commentsService.Update(commentEntity);
             return NoContent();
@@ -133,14 +138,15 @@ namespace iread_interaction_ms.Web.Controller
 
 
 
-    private void AddValidationLogic(CommentCreateDto comment)
+    private void ValidationLogic(Comment comment)
         {
             ModelState.Clear();
-            // if (String.IsNullOrEmpty(tagDto.Title))
-            // {
-            //     ModelState.AddModelError("Tag", "could not add/update tag because title is empty");
-            //     continue;
-            // }
+            if(comment.CommentType.Equals(CommentType.WORD_CLASS.ToString())){
+                
+                if(!WordClasses.elementsAsStr.Contains(comment.Value)){
+                    ModelState.AddModelError("Value", "Value should be one of [" + string.Join(",", WordClasses.elementsAsStr) +"]");    
+                }
+            }
 
         }
     }
