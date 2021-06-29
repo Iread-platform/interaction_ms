@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using iread_interaction_ms.DataAccess.Data.Type;
 using iread_interaction_ms.Web.DTO.Story;
 using iread_interaction_ms.Web.Dto;
+using iread_interaction_ms.Web.DTO.StoryDto;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -146,6 +147,12 @@ namespace iread_interaction_ms.Web.Controller
 
         if(storyDto == null || storyDto.StoryId < 1){
              ModelState.AddModelError("StoryId", "Story not found");    
+        }
+
+        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/Page/get/{comment.Interaction.PageId}").Result;
+
+        if(pageDto == null || pageDto.PageId < 1){
+             ModelState.AddModelError("PageId", "Page not found");    
         }
 
          UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/SysUsers/{comment.Interaction.StudentId}/get").Result;
