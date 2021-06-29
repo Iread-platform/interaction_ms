@@ -1,18 +1,17 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using iread_interaction_ms.DataAccess.Data.Entity;
-using iread_interaction_ms.Web.Dto.AudioDto;
 using iread_interaction_ms.Web.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using iread_interaction_ms.Web.Util;
 using iread_interaction_ms.Web.Dto.CommentDto;
-using System;
 using System.Collections.Generic;
 using iread_interaction_ms.DataAccess.Data.Type;
 using iread_interaction_ms.Web.DTO.Story;
 using iread_interaction_ms.Web.Dto;
 using iread_interaction_ms.Web.DTO.StoryDto;
+using System.Linq;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -66,7 +65,6 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-
         //POST: api/interaction/comment/add
         [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -79,6 +77,7 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             Comment comment = _mapper.Map<Comment>(commentCreateDto);
+            ValidationLogic(comment);
             AddValidationLogic(comment);
             if (!ModelState.IsValid)
             {
@@ -92,6 +91,7 @@ namespace iread_interaction_ms.Web.Controller
             }
             return CreatedAtAction("GetById", new { id = comment.CommentId }, _mapper.Map<CommentDto>(comment));
         }
+
 
         [HttpPut("{id}/update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -155,7 +155,7 @@ namespace iread_interaction_ms.Web.Controller
              ModelState.AddModelError("PageId", "Page not found");    
         }
 
-         UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/SysUsers/{comment.Interaction.StudentId}/get").Result;
+        UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{comment.Interaction.StudentId}/get").Result;
 
         if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
              ModelState.AddModelError("StudentId", "Student not found");    
@@ -179,6 +179,17 @@ namespace iread_interaction_ms.Web.Controller
                     ModelState.AddModelError("Value", "Value should be one of [" + string.Join(",", WordClasses.elementsAsStr) +"]");    
                 }
             }
+
+            if(comment.CommentType.Equals(CommentType.EXAMPLE.ToString())){
+                List<string> wordsOfExample = comment.Value.Split(' ',',', '.', ':', '\t').ToList();
+                List<string> delimiter = new List<string>(){"",",", ".", ":", "\t"};
+                wordsOfExample.RemoveAll(word => delimiter.Contains(word));
+                
+                if(wordsOfExample.Count() < 2 || !wordsOfExample.Contains(comment.Word)){
+                    ModelState.AddModelError("Value", $"Value should be a sentence and contains the word \'{comment.Word}\'");    
+                }
+            }
+
 
         }
     }
