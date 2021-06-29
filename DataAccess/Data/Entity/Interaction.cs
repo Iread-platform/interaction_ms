@@ -8,6 +8,8 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
     [Table("Interactions")]
     public class Interaction
     {
+        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
@@ -24,5 +26,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
         public int PageId { get; set; }
 
+        public List<Comment> Comments;
     }
 }

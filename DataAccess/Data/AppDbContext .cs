@@ -20,6 +20,11 @@ namespace iread_interaction_ms.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Comment>()
+            .HasOne(c => c.Interaction)
+            .WithMany(i => i.Comments)
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
         //entities

@@ -14,7 +14,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required]
         public int CommentId { get; set; }
 
-
         [Required(AllowEmptyStrings = false)]
         [EnumDataType(typeof(CommentType), ErrorMessage = "Comment type doesn't exist within enum should be one of [EXAMPLE, WORD_CLASS]")]
         public string CommentType { get; set; }
