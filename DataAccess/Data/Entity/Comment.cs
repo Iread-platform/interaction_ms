@@ -30,6 +30,10 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required]
         [RegularExpression("([0-9]{13})?$", ErrorMessage = "The {0} must be numeric and with milliseconds (13 digits)")]
         public string WordTimesTamp { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "The {0} must be one word only")]
+        public string Word { get; set; }
         
     }
 }
