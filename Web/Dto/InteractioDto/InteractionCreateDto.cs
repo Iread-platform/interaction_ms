@@ -7,10 +7,9 @@ namespace iread_interaction_ms.Web.Dto.InteractioDto
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
         public int StoryId { get; set; }
-        
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]
-        public int StudentId { get; set; }
+       
+
+        public string StudentId { get; set; }
         
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field is required.")]

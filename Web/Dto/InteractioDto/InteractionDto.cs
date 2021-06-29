@@ -6,7 +6,7 @@
 
         public int StoryId { get; set; }
         
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
         
         public int PageId { get; set; }
         

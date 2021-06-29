@@ -10,6 +10,8 @@ using iread_interaction_ms.Web.Dto.CommentDto;
 using System;
 using System.Collections.Generic;
 using iread_interaction_ms.DataAccess.Data.Type;
+using iread_interaction_ms.Web.DTO.Story;
+using iread_interaction_ms.Web.Dto;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -76,7 +78,7 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             Comment comment = _mapper.Map<Comment>(commentCreateDto);
-            ValidationLogic(comment);
+            AddValidationLogic(comment);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
@@ -136,6 +138,29 @@ namespace iread_interaction_ms.Web.Controller
             return NoContent();
         }
 
+
+    private void AddValidationLogic(Comment comment)
+    {
+
+        ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{comment.Interaction.StoryId}").Result;
+
+        if(storyDto == null || storyDto.StoryId < 1){
+             ModelState.AddModelError("StoryId", "Story not found");    
+        }
+
+         UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/SysUsers/{comment.Interaction.StudentId}/get").Result;
+
+        if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
+             ModelState.AddModelError("StudentId", "Student not found");    
+        }
+        else
+        {
+            if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
+            {
+             ModelState.AddModelError("StudentId", "User not a student");    
+            }
+        }
+    }
 
 
     private void ValidationLogic(Comment comment)
