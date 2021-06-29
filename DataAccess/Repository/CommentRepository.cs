@@ -48,12 +48,15 @@ namespace iread_interaction_ms.DataAccess.Repository
             return _context.Comments.Any(c => c.CommentId == id);
         }
 
-        public void Update(Comment comment)
+        public void Update(Comment comment, Comment oldComment)
         {
+            _context.Entry(oldComment).State = EntityState.Deleted;
             _context.Comments.Attach(comment);
             _context.Entry(comment).State = EntityState.Modified;
             _context.Entry(comment).Reference(c => c.Interaction).IsModified = false;
             _context.Entry(comment).Property(c => c.InteractionId).IsModified = false;
+            _context.Entry(comment).Property(c => c.Word).IsModified = false;
+            _context.Entry(comment).Property(c => c.WordTimesTamp).IsModified = false;
             _context.SaveChanges();
 
         }

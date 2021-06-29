@@ -100,22 +100,25 @@ namespace iread_interaction_ms.Web.Controller
              if (comment == null)
             {
                 return BadRequest();
+            }            
+            
+            Comment oldComment = _commentsService.GetById(id).Result;
+             if (oldComment == null)
+            {
+                return NotFound();
             }
 
+            // get word from database before checking
             Comment commentEntity = _mapper.Map<Comment>(comment);
+            commentEntity.Word = oldComment.Word;            
             ValidationLogic(commentEntity);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
-
-            if (!_commentsService.Exists(id))
-            {
-                return NotFound();
-            }
             
             commentEntity.CommentId = id;
-            _commentsService.Update(commentEntity);
+            _commentsService.Update(commentEntity, oldComment);
             return NoContent();
         }
 
@@ -169,10 +172,8 @@ namespace iread_interaction_ms.Web.Controller
         }
     }
 
-
     private void ValidationLogic(Comment comment)
         {
-            ModelState.Clear();
             if(comment.CommentType.Equals(CommentType.WORD_CLASS.ToString())){
                 
                 if(!WordClasses.elementsAsStr.Contains(comment.Value)){
@@ -189,7 +190,6 @@ namespace iread_interaction_ms.Web.Controller
                     ModelState.AddModelError("Value", $"Value should be a sentence and contains the word \'{comment.Word}\'");    
                 }
             }
-
 
         }
     }

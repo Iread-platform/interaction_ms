@@ -44,9 +44,9 @@ namespace iread_interaction_ms.Web.Service
             return _publicRepository.GetCommentsRepo.Exists(id);
         }
 
-        internal void Update(Comment comment)
+        internal void Update(Comment comment, Comment oldComment)
         {
-            _publicRepository.GetCommentsRepo.Update(comment);
+            _publicRepository.GetCommentsRepo.Update(comment, oldComment);
         }
 
         internal void Delete(Comment comment)
