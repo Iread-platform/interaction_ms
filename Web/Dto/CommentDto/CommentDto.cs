@@ -11,6 +11,7 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public string CommentType { get; set; }
         public string Value { get; set; }
         public InteractionDto Interaction { get; set; }
+        public string WordTimesTamp { get; set; }
         
     }
 }

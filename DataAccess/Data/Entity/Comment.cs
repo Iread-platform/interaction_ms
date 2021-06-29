@@ -26,6 +26,10 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Range(1, int.MaxValue, ErrorMessage = "The InteractionId field is required.")]
         public int InteractionId { get; set; }
         public Interaction Interaction { get; set; }
+
+        [Required]
+        [RegularExpression("([0-9]{13})?$", ErrorMessage = "The {0} must be numeric and with milliseconds (13 digits)")]
+        public string WordTimesTamp { get; set; }
         
     }
 }
