@@ -152,7 +152,7 @@ namespace iread_interaction_ms.Web.Controller
              ModelState.AddModelError("StoryId", "Story not found");    
         }
 
-        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/Page/get/{comment.Interaction.PageId}").Result;
+        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{comment.Interaction.PageId}").Result;
 
         if(pageDto == null || pageDto.PageId < 1){
              ModelState.AddModelError("PageId", "Page not found");    
