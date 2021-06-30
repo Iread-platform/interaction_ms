@@ -51,7 +51,7 @@ namespace iread_interaction_ms.Web.Service
 
         internal void Delete(Comment comment)
         {
-            _publicRepository.GetCommentsRepo.Delete(comment);
+            _publicRepository.GetInteractionRepo.Delete(comment.Interaction);
         }
     }
 }

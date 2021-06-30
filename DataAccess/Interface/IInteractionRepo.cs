@@ -14,9 +14,9 @@ namespace iread_interaction_ms.DataAccess.Interface
 
         IEnumerable<Interaction> Get();
 
-        void Delete(int id);
+        public void Delete(Interaction interaction);
 
         bool Exists(int id);
-
+        Task<List<Interaction>> GetByPageId(int pageId);
     }
 }

@@ -32,8 +32,8 @@ namespace iread_interaction_ms.Web.Controller
             _consulHttpClient = consulHttpClient;
         }
         
-        // GET: api/interaction/comment/get/1
-        [HttpGet("get/{id}")]
+        // GET: api/interaction/comment/1/
+        [HttpGet("{id}/get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById([FromRoute]int id)
@@ -78,7 +78,7 @@ namespace iread_interaction_ms.Web.Controller
 
             Comment comment = _mapper.Map<Comment>(commentCreateDto);
             ValidationLogic(comment);
-            AddValidationLogic(comment);
+            ValidationLogicForAdding(comment);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
@@ -143,7 +143,7 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-    private void AddValidationLogic(Comment comment)
+    private void ValidationLogicForAdding(Comment comment)
     {
 
         ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{comment.Interaction.StoryId}").Result;

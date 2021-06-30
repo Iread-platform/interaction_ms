@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,11 @@ namespace iread_interaction_ms.Web.Service
             {
                 return false;
             }
+        }
+
+        public async Task<List<Interaction>> GetByPageId(int pageId)
+        {
+             return await _publicRepository.GetInteractionRepo.GetByPageId(pageId);
         }
     }
 }

@@ -40,7 +40,6 @@ namespace iread_interaction_ms.DataAccess.Repository
         public void Delete(Comment comment)
         {
             _context.Comments.Remove(comment);
-            _context.Interactions.Remove(comment.Interaction);
             _context.SaveChanges();
         }
 

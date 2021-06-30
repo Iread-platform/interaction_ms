@@ -16,13 +16,32 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<Audio, AudioUpdateDto>().ReverseMap();
             
             //Interaction Mapper
-            CreateMap<Interaction, InteractionDto>().ReverseMap();
+            //CreateMap<Interaction, InteractionDto>().ReverseMap();
             CreateMap<InteractionCreateDto, Interaction>().ReverseMap();
 
             //Audio Mapper
             CreateMap<Comment, CommentDto>().ReverseMap();
             CreateMap<CommentCreateDto, Comment>().ReverseMap();
             CreateMap<CommentUpdateDto, Comment>().ReverseMap();
+           
+            
+            CreateMap<Interaction, InteractionDto>()
+        .ForMember(dest =>
+            dest.CommentId,
+            opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0].CommentId : 0))
+        .ForMember(dest =>
+            dest.CommentType,
+            opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0].CommentType : null))
+        .ForMember(dest =>
+            dest.Value,
+            opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0].Value : null))
+        .ForMember(dest =>
+            dest.WordTimesTamp,
+            opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0].WordTimesTamp : null))
+        .ForMember(dest =>
+            dest.Word,
+            opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0].Word : null));
+            
            
             
         }
