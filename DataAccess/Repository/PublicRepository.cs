@@ -10,6 +10,10 @@ namespace iread_interaction_ms.DataAccess.Repository
         private IAudioRepository _audioRepository;
         private ICommentRepository _commentRepository;
 
+        private IDrawingRepository _drawingRepository;
+
+        
+
         public PublicRepository(AppDbContext context)
         {
             _context = context;
@@ -22,7 +26,7 @@ namespace iread_interaction_ms.DataAccess.Repository
             }
         }
 
-        public IAudioRepository GetAudioRepository
+        public IAudioRepository GetAudioRepo
         {
             get
             {
@@ -36,5 +40,14 @@ namespace iread_interaction_ms.DataAccess.Repository
                 return _commentRepository ??= new CommentRepository(_context);
             }
         }
+
+         public IDrawingRepository GetDrawingRepo
+        {
+            get
+            {
+                return _drawingRepository ??= new DrawingRepository(_context);
+            }
+        }
+
     }
 }

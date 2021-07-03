@@ -33,6 +33,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required(AllowEmptyStrings = false)]
         [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "The {0} must be one word only")]
         public string Word { get; set; }
-        
+
     }
 }

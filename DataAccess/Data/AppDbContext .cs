@@ -25,12 +25,18 @@ namespace iread_interaction_ms.DataAccess.Data
             .HasOne(c => c.Interaction)
             .WithMany(i => i.Comments)
             .OnDelete(DeleteBehavior.Cascade);
+
+             modelBuilder.Entity<Drawing>()
+            .HasOne(d => d.Interaction)
+            .WithMany(i => i.Drawings)
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
         //entities
         public DbSet<Interaction> Interactions { get; set; }
         public DbSet<Audio> Audios { get; set; }
          public DbSet<Comment> Comments { get; set; }
+         public DbSet<Drawing> Drawings { get; set; }
 
     }
 }

@@ -27,5 +27,7 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         public int PageId { get; set; }
 
         public List<Comment> Comments;
+
+        public List<Drawing> Drawings;
     }
 }

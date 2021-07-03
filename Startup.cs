@@ -88,6 +88,7 @@ namespace iread_interaction_ms
             services.AddScoped<AudioServices>();
             services.AddScoped<CommentsService>();
             services.AddScoped<InteractionsService>();
+            services.AddScoped<DrawingService>();
             
             IMapper mapper = new MapperConfiguration(config=>{
                 config.AddProfile<AutoMapperProfile>();
