@@ -43,7 +43,7 @@ namespace iread_interaction_ms.Web.Profile
             
              //Drawing Mapper
             CreateMap<Drawing, DrawingDto>().ReverseMap();
-            
+            CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
             
            
             

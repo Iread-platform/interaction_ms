@@ -12,6 +12,7 @@ using iread_interaction_ms.Web.DTO.Story;
 using iread_interaction_ms.Web.Dto;
 using iread_interaction_ms.Web.DTO.StoryDto;
 using System.Linq;
+using iread_interaction_ms.Web.DTO;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -65,32 +66,32 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-    //     //POST: api/interaction/comment/add
-    //     [HttpPost("add")]
-    //     [ProducesResponseType(StatusCodes.Status201Created)]
-    //     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    //     public IActionResult Post([FromBody] CommentCreateDto commentCreateDto)
-    //     {
-    //         if (commentCreateDto == null)
-    //         {
-    //             return BadRequest();
-    //         }
+        //POST: api/interaction/drawing/add
+        [HttpPost("add")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Post([FromBody] DrawingCreateDto drawingCreateDto)
+        {
+            if (drawingCreateDto == null)
+            {
+                return BadRequest();
+            }
 
-    //         Comment comment = _mapper.Map<Comment>(commentCreateDto);
-    //         ValidationLogic(comment);
-    //         ValidationLogicForAdding(comment);
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
+            Drawing drawing = _mapper.Map<Drawing>(drawingCreateDto);
+            ValidationLogic(drawing);
+            ValidationLogicForAdding(drawing);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
 
            
-    //         if (!_drawingService.Insert(comment))
-    //         {
-    //             return BadRequest();
-    //         }
-    //         return CreatedAtAction("GetById", new { id = comment.CommentId }, _mapper.Map<CommentDto>(comment));
-    //     }
+            if (!_drawingService.Insert(drawing))
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction("GetById", new { id = drawing.DrawingId }, _mapper.Map<DrawingDto>(drawing));
+        }
 
 
     //     [HttpPut("{id}/update")]
@@ -143,54 +144,67 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-    // private void ValidationLogicForAdding(Comment comment)
-    // {
+    private void ValidationLogicForAdding(Drawing drawing)
+    {
 
-    //     ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{comment.Interaction.StoryId}").Result;
+        ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{drawing.Interaction.StoryId}").Result;
 
-    //     if(storyDto == null || storyDto.StoryId < 1){
-    //          ModelState.AddModelError("StoryId", "Story not found");    
-    //     }
+        if(storyDto == null || storyDto.StoryId < 1){
+             ModelState.AddModelError("StoryId", "Story not found");    
+        }
 
-    //     PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{comment.Interaction.PageId}").Result;
+        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{drawing.Interaction.PageId}").Result;
 
-    //     if(pageDto == null || pageDto.PageId < 1){
-    //          ModelState.AddModelError("PageId", "Page not found");    
-    //     }
+        if(pageDto == null || pageDto.PageId < 1){
+             ModelState.AddModelError("PageId", "Page not found");    
+        }
 
-    //     UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{comment.Interaction.StudentId}/get").Result;
+        UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{drawing.Interaction.StudentId}/get").Result;
 
-    //     if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
-    //          ModelState.AddModelError("StudentId", "Student not found");    
-    //     }
-    //     else
-    //     {
-    //         if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
-    //         {
-    //          ModelState.AddModelError("StudentId", "User not a student");    
-    //         }
-    //     }
-    // }
+        if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
+             ModelState.AddModelError("StudentId", "Student not found");    
+        }
+        else
+        {
+            if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
+            {
+             ModelState.AddModelError("StudentId", "User not a student");    
+            }
+        }
+                                                                                                                                    
+        AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
 
-    // private void ValidationLogic(Comment comment)
-    //     {
-    //         if(comment.CommentType.Equals(CommentType.WORD_CLASS.ToString())){
+        if(attachmentDto == null || attachmentDto.Id < 1){
+             ModelState.AddModelError("StudentId", "Audio not found");    
+        }
+        else
+        {
+            if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+            {
+                ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
+            }
+        }
+    }
+
+    private void ValidationLogic(Drawing drawing)
+        {
+            // if(drawing.CommentType.Equals(CommentType.WORD_CLASS.ToString())){
                 
-    //             if(!WordClasses.elementsAsStr.Contains(comment.Value)){
-    //                 ModelState.AddModelError("Value", "Value should be one of [" + string.Join(",", WordClasses.elementsAsStr) +"]");    
-    //             }
-    //         }
+            //     if(!WordClasses.elementsAsStr.Contains(comment.Value)){
+            //         ModelState.AddModelError("Value", "Value should be one of [" + string.Join(",", WordClasses.elementsAsStr) +"]");    
+            //     }
+            // }
 
-    //         if(comment.CommentType.Equals(CommentType.EXAMPLE.ToString())){
-    //             List<string> wordsOfExample = comment.Value.Split(' ',',', '.', ':', '\t').ToList();
-    //             List<string> delimiter = new List<string>(){"",",", ".", ":", "\t"};
-    //             wordsOfExample.RemoveAll(word => delimiter.Contains(word));
+            // if(drawing.CommentType.Equals(CommentType.EXAMPLE.ToString())){
+            //     List<string> wordsOfExample = comment.Value.Split(' ',',', '.', ':', '\t').ToList();
+            //     List<string> delimiter = new List<string>(){"",",", ".", ":", "\t"};
+            //     wordsOfExample.RemoveAll(word => delimiter.Contains(word));
                 
-    //             if(wordsOfExample.Count() < 2 || !wordsOfExample.Contains(comment.Word)){
-    //                 ModelState.AddModelError("Value", $"Value should be a sentence and contains the word \'{comment.Word}\'");    
-    //             }
-    //         }
+            //     if(wordsOfExample.Count() < 2 || !wordsOfExample.Contains(comment.Word)){
+            //         ModelState.AddModelError("Value", $"Value should be a sentence and contains the word \'{comment.Word}\'");    
+            //     }
+            // }
 
-    //     }
+        }
     }
 }
