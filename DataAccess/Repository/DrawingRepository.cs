@@ -28,7 +28,7 @@ namespace iread_interaction_ms.DataAccess.Repository
 
         public async Task<Drawing> GetByInteractionId(int id)
         {
-            return await _context.Drawings.FirstOrDefaultAsync(d => d.InteractionId == id);
+            return await _context.Drawings.Include(c => c.Interaction).FirstOrDefaultAsync(d => d.InteractionId == id);
         }
 
         public void Insert(Drawing drawing)

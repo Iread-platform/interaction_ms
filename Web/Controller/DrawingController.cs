@@ -48,21 +48,21 @@ namespace iread_interaction_ms.Web.Controller
             return Ok(_mapper.Map<DrawingDto>(drawing));
         }
 
-    //     // GET: api/interaction/comment/get-by-interaction/1
-    //     [HttpGet("get-by-interaction/{id}")]
-    //     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    //     [ProducesResponseType(StatusCodes.Status200OK)]
-    //     public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
-    //     {
-    //         Comment comment = await _drawingService.GetByInteractionId(id);
+        // GET: api/interaction/drawing/get-by-interaction/1
+        [HttpGet("get-by-interaction/{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
+        {
+            Drawing drawing = await _drawingService.GetByInteractionId(id);
 
-    //         if (comment == null)
-    //         {
-    //             return NotFound();
-    //         }
+            if (drawing == null)
+            {
+                return NotFound();
+            }
 
-    //         return Ok(_mapper.Map<CommentDto>(comment));
-    //     }
+            return Ok(_mapper.Map<DrawingDto>(drawing));
+        }
 
 
     //     //POST: api/interaction/comment/add
