@@ -78,7 +78,6 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             Drawing drawing = _mapper.Map<Drawing>(drawingCreateDto);
-            ValidationLogic(drawing);
             ValidationLogicForAdding(drawing);
             if (!ModelState.IsValid)
             {
@@ -94,34 +93,32 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-    //     [HttpPut("{id}/update")]
-    //     [ProducesResponseType(StatusCodes.Status200OK)]
-    //     public IActionResult Update([FromBody] CommentUpdateDto comment, [FromRoute] int id)
-    //     {
-    //          if (comment == null)
-    //         {
-    //             return BadRequest();
-    //         }            
+        [HttpPut("{id}/update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] DrawingUpdateDto drawing, [FromRoute] int id)
+        {
+             if (drawing == null)
+            {
+                return BadRequest();
+            }            
             
-    //         Comment oldComment = _drawingService.GetById(id).Result;
-    //          if (oldComment == null)
-    //         {
-    //             return NotFound();
-    //         }
+            Drawing oldDrawing = _drawingService.GetById(id).Result;
+             if (oldDrawing == null)
+            {
+                return NotFound();
+            }
 
-    //         // get word from database before checking
-    //         Comment commentEntity = _mapper.Map<Comment>(comment);
-    //         commentEntity.Word = oldComment.Word;            
-    //         ValidationLogic(commentEntity);
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
+            Drawing drawingEntity = _mapper.Map<Drawing>(drawing);
+            ValidationLogicForUpdating(drawingEntity);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
             
-    //         commentEntity.CommentId = id;
-    //         _drawingService.Update(commentEntity, oldComment);
-    //         return NoContent();
-    //     }
+            drawingEntity.DrawingId = id;
+            _drawingService.Update(drawingEntity, oldDrawing);
+            return NoContent();
+        }
 
 
 
@@ -186,24 +183,20 @@ namespace iread_interaction_ms.Web.Controller
         }
     }
 
-    private void ValidationLogic(Drawing drawing)
+    private void ValidationLogicForUpdating(Drawing drawing)
         {
-            // if(drawing.CommentType.Equals(CommentType.WORD_CLASS.ToString())){
-                
-            //     if(!WordClasses.elementsAsStr.Contains(comment.Value)){
-            //         ModelState.AddModelError("Value", "Value should be one of [" + string.Join(",", WordClasses.elementsAsStr) +"]");    
-            //     }
-            // }
+            AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
 
-            // if(drawing.CommentType.Equals(CommentType.EXAMPLE.ToString())){
-            //     List<string> wordsOfExample = comment.Value.Split(' ',',', '.', ':', '\t').ToList();
-            //     List<string> delimiter = new List<string>(){"",",", ".", ":", "\t"};
-            //     wordsOfExample.RemoveAll(word => delimiter.Contains(word));
-                
-            //     if(wordsOfExample.Count() < 2 || !wordsOfExample.Contains(comment.Word)){
-            //         ModelState.AddModelError("Value", $"Value should be a sentence and contains the word \'{comment.Word}\'");    
-            //     }
-            // }
+            if(attachmentDto == null || attachmentDto.Id < 1){
+                ModelState.AddModelError("StudentId", "Audio not found");    
+            }
+            else
+            {
+                if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+                {
+                    ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
+                }
+            }
 
         }
     }
