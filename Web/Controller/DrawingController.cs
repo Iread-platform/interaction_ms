@@ -124,23 +124,23 @@ namespace iread_interaction_ms.Web.Controller
 
 
 
-    //     // DELETE: api/interaction/comment/5/delete
-    //     [HttpDelete("{id}/delete")]
-    //     public IActionResult Delete([FromRoute] int id)
-    //     {
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
-    //         var comment = _drawingService.GetById(id).Result;
-    //         if (comment == null)
-    //         {
-    //             return NotFound();
-    //         }
+        // DELETE: api/interaction/drawing/5/delete
+        [HttpDelete("{id}/delete")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+            var drawing = _drawingService.GetById(id).Result;
+            if (drawing == null)
+            {
+                return NotFound();
+            }
 
-    //        _drawingService.Delete(comment);
-    //         return NoContent();
-    //     }
+           _drawingService.Delete(drawing);
+            return NoContent();
+        }
 
 
     // private void ValidationLogicForAdding(Comment comment)
