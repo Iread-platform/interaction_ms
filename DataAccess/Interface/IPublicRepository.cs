@@ -3,8 +3,10 @@ namespace iread_interaction_ms.DataAccess.Interface
 {
     public interface IPublicRepository
     {
-        IAudioRepository GetAudioRepository { get; }
+        IAudioRepository GetAudioRepo { get; }
         IInteractionRepo GetInteractionRepo { get; }
         ICommentRepository GetCommentsRepo { get; }
+        IDrawingRepository GetDrawingRepo { get; }
+
     }
 }

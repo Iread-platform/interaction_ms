@@ -16,14 +16,14 @@ namespace iread_interaction_ms.Web.Service
 
         public async Task<Audio> GetAudioById(int id)
         {
-            return await _publicRepository.GetAudioRepository.GetById(id);
+            return await _publicRepository.GetAudioRepo.GetById(id);
         }
 
         public bool InsertAudio(Audio audio)
         {
             try
             {
-                _publicRepository.GetAudioRepository.Insert(audio);
+                _publicRepository.GetAudioRepo.Insert(audio);
                 return true;
             }
             catch (DbUpdateConcurrencyException)
@@ -34,7 +34,7 @@ namespace iread_interaction_ms.Web.Service
 
         public async Task<bool> IsInteractionHasAudio(int  interactionId)
         {
-            return await _publicRepository.GetAudioRepository.IsSInteractionHasAudio(interactionId);
+            return await _publicRepository.GetAudioRepo.IsSInteractionHasAudio(interactionId);
         }
     }
 }
