@@ -34,9 +34,5 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "The {0} must be one word only")]
         public string Word { get; set; }
 
-        public static implicit operator Comment(Drawing v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

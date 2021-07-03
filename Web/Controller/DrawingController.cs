@@ -181,6 +181,11 @@ namespace iread_interaction_ms.Web.Controller
                 ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
             }
         }
+        if (!JsonUtils.ValidateJSON(drawing.Points))
+        {
+            ModelState.AddModelError("Points", "Points should has json formate");
+        }
+        
     }
 
     private void ValidationLogicForUpdating(Drawing drawing)
@@ -199,5 +204,10 @@ namespace iread_interaction_ms.Web.Controller
             }
 
         }
+
+
     }
+
+
+    
 }
