@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using iread_interaction_ms.Web.Dto.InteractioDto;
 
@@ -15,6 +16,15 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public int AudioId { get; set; }
 
         public string Comment { get; set; }
+
+        [Required]
+        public Nullable<int> MaxX { get; set; }
+        [Required]
+        public Nullable<int> MaxY { get; set; }
+        [Required]
+        public Nullable<int> MinX { get; set; }
+        [Required]
+        public Nullable<int> MinY { get; set; }
         
     }
 }
