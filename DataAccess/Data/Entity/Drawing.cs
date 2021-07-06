@@ -24,6 +24,10 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
 
         [Required(AllowEmptyStrings = false)]
         public string Points { get; set; }
+        public int MaxX { get; set; }
+        public int MaxY { get; set; }
+        public int MinX { get; set; }
+        public int MinY { get; set; }
         
     }
 }
