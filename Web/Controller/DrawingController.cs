@@ -168,11 +168,16 @@ namespace iread_interaction_ms.Web.Controller
              ModelState.AddModelError("StudentId", "User not a student");    
             }
         }
-                                                                                                                                    
+        
+        if(drawing.AudioId == 0){
+            // if audio not passed don't check
+            return;              
+        }                                                                                                              
+
         AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
 
         if(attachmentDto == null || attachmentDto.Id < 1){
-             ModelState.AddModelError("StudentId", "Audio not found");    
+             ModelState.AddModelError("AudioId", "Audio not found");    
         }
         else
         {
