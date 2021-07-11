@@ -46,6 +46,9 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
             CreateMap<DrawingUpdateDto, Drawing>().ReverseMap();
             
+
+             //HighLight Mapper
+            CreateMap<HighLight, HighLightDto>().ReverseMap();
            
             
         }

@@ -89,6 +89,7 @@ namespace iread_interaction_ms
             services.AddScoped<CommentsService>();
             services.AddScoped<InteractionsService>();
             services.AddScoped<DrawingService>();
+             services.AddScoped<HighLightService>();
             
             IMapper mapper = new MapperConfiguration(config=>{
                 config.AddProfile<AutoMapperProfile>();
