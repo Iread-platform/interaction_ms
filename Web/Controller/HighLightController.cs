@@ -63,7 +63,7 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-        //POST: api/interaction/drawing/add
+        //POST: api/interaction/highLight/add
         [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -89,7 +89,7 @@ namespace iread_interaction_ms.Web.Controller
             return CreatedAtAction("GetById", new { id = highLight.HighLightId }, _mapper.Map<HighLightDto>(highLight));
         }
 
-
+        // GET: api/interaction/highLight/1/update
         [HttpPut("{id}/update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Update([FromBody] HighLightUpdateDto highLight, [FromRoute] int id)
