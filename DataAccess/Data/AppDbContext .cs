@@ -35,8 +35,9 @@ namespace iread_interaction_ms.DataAccess.Data
         //entities
         public DbSet<Interaction> Interactions { get; set; }
         public DbSet<Audio> Audios { get; set; }
-         public DbSet<Comment> Comments { get; set; }
-         public DbSet<Drawing> Drawings { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Drawing> Drawings { get; set; }
+        public DbSet<HighLight> HighLights { get; set; }
 
     }
 }
