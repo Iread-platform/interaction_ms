@@ -90,32 +90,26 @@ namespace iread_interaction_ms.Web.Controller
         }
 
 
-    //     [HttpPut("{id}/update")]
-    //     [ProducesResponseType(StatusCodes.Status200OK)]
-    //     public IActionResult Update([FromBody] DrawingUpdateDto drawing, [FromRoute] int id)
-    //     {
-    //          if (drawing == null)
-    //         {
-    //             return BadRequest();
-    //         }            
+        [HttpPut("{id}/update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] HighLightUpdateDto highLight, [FromRoute] int id)
+        {
+             if (highLight == null)
+            {
+                return BadRequest();
+            }            
             
-    //         Drawing oldDrawing = _highLightService.GetById(id).Result;
-    //          if (oldDrawing == null)
-    //         {
-    //             return NotFound();
-    //         }
+            HighLight oldHighLight = _highLightService.GetById(id).Result;
+             if (oldHighLight == null)
+            {
+                return NotFound();
+            }
 
-    //         Drawing drawingEntity = _mapper.Map<Drawing>(drawing);
-    //         ValidationLogicForUpdating(drawingEntity);
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
-            
-    //         drawingEntity.DrawingId = id;
-    //         _highLightService.Update(drawingEntity, oldDrawing);
-    //         return NoContent();
-    //     }
+            HighLight highLightEntity = _mapper.Map<HighLight>(highLight);
+            highLightEntity.HighLightId = id;
+            _highLightService.Update(highLightEntity, oldHighLight);
+            return NoContent();
+        }
 
 
 
@@ -166,24 +160,6 @@ namespace iread_interaction_ms.Web.Controller
             }
         }        
     }
-
-    // private void ValidationLogicForUpdating(Drawing drawing)
-    //     {
-    //         AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
-
-    //         if(attachmentDto == null || attachmentDto.Id < 1){
-    //             ModelState.AddModelError("StudentId", "Audio not found");    
-    //         }
-    //         else
-    //         {
-    //             if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
-    //             {
-    //                 ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
-    //             }
-    //         }
-
-    //     }
-
 
     }
 

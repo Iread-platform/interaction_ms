@@ -41,16 +41,17 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<CommentUpdateDto, Comment>().ReverseMap();
            
             
-             //Drawing Mapper
+            //Drawing Mapper
             CreateMap<Drawing, DrawingDto>().ReverseMap();
             CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
             CreateMap<DrawingUpdateDto, Drawing>().ReverseMap();
             
 
-             //HighLight Mapper
+            //HighLight Mapper
             CreateMap<HighLight, HighLightDto>().ReverseMap();
             CreateMap<HighLightCreateDto, HighLight>().ReverseMap();
-            
+            CreateMap<HighLightUpdateDto, HighLight>().ReverseMap();
+
         }
     }
 }
