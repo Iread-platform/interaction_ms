@@ -25,9 +25,9 @@ namespace iread_interaction_ms.Web.Controller
         private readonly InteractionsService _interactionServices;
         private readonly IConsulHttpClientService _consulHttpClient;
 
-        public DrawingController(DrawingService commentsService, IMapper mapper, InteractionsService interactionServices, IConsulHttpClientService consulHttpClient)
+        public DrawingController(DrawingService drawingService, IMapper mapper, InteractionsService interactionServices, IConsulHttpClientService consulHttpClient)
         {
-            _drawingService = commentsService;
+            _drawingService = drawingService;
             _mapper = mapper;
             _interactionServices = interactionServices;
             _consulHttpClient = consulHttpClient;

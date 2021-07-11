@@ -5,6 +5,11 @@ using iread_interaction_ms.Web.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using iread_interaction_ms.Web.Dto.CommentDto;
+using iread_interaction_ms.Web.Util;
+using iread_interaction_ms.Web.DTO.Story;
+using iread_interaction_ms.Web.DTO.StoryDto;
+using iread_interaction_ms.Web.Dto;
+using iread_interaction_ms.DataAccess.Data.Type;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -25,7 +30,7 @@ namespace iread_interaction_ms.Web.Controller
             _consulHttpClient = consulHttpClient;
         }
         
-        // GET: api/interaction/drawing/1/get
+        // GET: api/interaction/highLight/1/get
         [HttpGet("{id}/get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,48 +46,48 @@ namespace iread_interaction_ms.Web.Controller
             return Ok(_mapper.Map<HighLightDto>(highLight));
         }
 
-    //     // GET: api/interaction/drawing/get-by-interaction/1
-    //     [HttpGet("get-by-interaction/{id}")]
-    //     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    //     [ProducesResponseType(StatusCodes.Status200OK)]
-    //     public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
-    //     {
-    //         Drawing drawing = await _highLightService.GetByInteractionId(id);
+        // GET: api/interaction/highLight/get-by-interaction/1
+        [HttpGet("get-by-interaction/{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
+        {
+            HighLight highLight = await _highLightService.GetByInteractionId(id);
 
-    //         if (drawing == null)
-    //         {
-    //             return NotFound();
-    //         }
+            if (highLight == null)
+            {
+                return NotFound();
+            }
 
-    //         return Ok(_mapper.Map<DrawingDto>(drawing));
-    //     }
+            return Ok(_mapper.Map<HighLightDto>(highLight));
+        }
 
 
-    //     //POST: api/interaction/drawing/add
-    //     [HttpPost("add")]
-    //     [ProducesResponseType(StatusCodes.Status201Created)]
-    //     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    //     public IActionResult Post([FromBody] DrawingCreateDto drawingCreateDto)
-    //     {
-    //         if (drawingCreateDto == null)
-    //         {
-    //             return BadRequest();
-    //         }
+        //POST: api/interaction/drawing/add
+        [HttpPost("add")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Post([FromBody] HighLightCreateDto highLightCreateDto)
+        {
+            if (highLightCreateDto == null)
+            {
+                return BadRequest();
+            }
 
-    //         Drawing drawing = _mapper.Map<Drawing>(drawingCreateDto);
-    //         ValidationLogicForAdding(drawing);
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
+            HighLight highLight = _mapper.Map<HighLight>(highLightCreateDto);
+            ValidationLogicForAdding(highLight);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
 
            
-    //         if (!_highLightService.Insert(drawing))
-    //         {
-    //             return BadRequest();
-    //         }
-    //         return CreatedAtAction("GetById", new { id = drawing.DrawingId }, _mapper.Map<DrawingDto>(drawing));
-    //     }
+            if (!_highLightService.Insert(highLight))
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction("GetById", new { id = highLight.HighLightId }, _mapper.Map<HighLightDto>(highLight));
+        }
 
 
     //     [HttpPut("{id}/update")]
@@ -114,76 +119,53 @@ namespace iread_interaction_ms.Web.Controller
 
 
 
-    //     // DELETE: api/interaction/drawing/5/delete
-    //     [HttpDelete("{id}/delete")]
-    //     public IActionResult Delete([FromRoute] int id)
-    //     {
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ErrorMessage.ModelStateParser(ModelState));
-    //         }
-    //         var drawing = _highLightService.GetById(id).Result;
-    //         if (drawing == null)
-    //         {
-    //             return NotFound();
-    //         }
+        // DELETE: api/interaction/highLight/5/delete
+        [HttpDelete("{id}/delete")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+            var highLight = _highLightService.GetById(id).Result;
+            if (highLight == null)
+            {
+                return NotFound();
+            }
 
-    //        _highLightService.Delete(drawing);
-    //         return NoContent();
-    //     }
+           _highLightService.Delete(highLight);
+            return NoContent();
+        }
 
 
-    // private void ValidationLogicForAdding(Drawing drawing)
-    // {
+    private void ValidationLogicForAdding(HighLight highLight)
+    {
 
-    //     ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{drawing.Interaction.StoryId}").Result;
+        ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{highLight.Interaction.StoryId}").Result;
 
-    //     if(storyDto == null || storyDto.StoryId < 1){
-    //          ModelState.AddModelError("StoryId", "Story not found");    
-    //     }
+        if(storyDto == null || storyDto.StoryId < 1){
+             ModelState.AddModelError("StoryId", "Story not found");    
+        }
 
-    //     PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{drawing.Interaction.PageId}").Result;
+        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{highLight.Interaction.PageId}").Result;
 
-    //     if(pageDto == null || pageDto.PageId < 1){
-    //          ModelState.AddModelError("PageId", "Page not found");    
-    //     }
+        if(pageDto == null || pageDto.PageId < 1){
+             ModelState.AddModelError("PageId", "Page not found");    
+        }
 
-    //     UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{drawing.Interaction.StudentId}/get").Result;
+        UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{highLight.Interaction.StudentId}/get").Result;
 
-    //     if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
-    //          ModelState.AddModelError("StudentId", "Student not found");    
-    //     }
-    //     else
-    //     {
-    //         if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
-    //         {
-    //          ModelState.AddModelError("StudentId", "User not a student");    
-    //         }
-    //     }
-        
-    //     if(drawing.AudioId == 0){
-    //         // if audio not passed don't check
-    //         return;              
-    //     }                                                                                                              
-
-    //     AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
-
-    //     if(attachmentDto == null || attachmentDto.Id < 1){
-    //          ModelState.AddModelError("AudioId", "Audio not found");    
-    //     }
-    //     else
-    //     {
-    //         if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
-    //         {
-    //             ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
-    //         }
-    //     }
-    //     if (!JsonUtils.ValidateJSON(drawing.Points))
-    //     {
-    //         ModelState.AddModelError("Points", "Points should has json formate");
-    //     }
-        
-    // }
+        if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
+             ModelState.AddModelError("StudentId", "Student not found");    
+        }
+        else
+        {
+            if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
+            {
+             ModelState.AddModelError("StudentId", "User not a student");    
+            }
+        }        
+    }
 
     // private void ValidationLogicForUpdating(Drawing drawing)
     //     {

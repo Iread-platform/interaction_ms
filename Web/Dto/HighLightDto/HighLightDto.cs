@@ -15,10 +15,6 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public int FirstWordIndex { get; set; }
         
         public int EndWordIndex { get; set; }
-
-        public string FirstWordTimesTamp { get; set; }
-        
-        public string EndWordTimesTamp { get; set; }
         
         public string FirstWord { get; set; }
         

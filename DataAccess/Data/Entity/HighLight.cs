@@ -24,15 +24,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [Required]
         public int EndWordIndex { get; set; }
 
-        [Required]
-        [RegularExpression("([0-9]{13})?$", ErrorMessage = "The {0} must be numeric and with milliseconds (13 digits)")]
-        public string FirstWordTimesTamp { get; set; }
-
-        
-        [Required]
-        [RegularExpression("([0-9]{13})?$", ErrorMessage = "The {0} must be numeric and with milliseconds (13 digits)")]
-        public string EndWordTimesTamp { get; set; }
-
         
         [Required(AllowEmptyStrings = false)]
         public string FirstWord { get; set; }

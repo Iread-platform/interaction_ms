@@ -49,7 +49,7 @@ namespace iread_interaction_ms.Web.Profile
 
              //HighLight Mapper
             CreateMap<HighLight, HighLightDto>().ReverseMap();
-           
+            CreateMap<HighLightCreateDto, HighLight>().ReverseMap();
             
         }
     }
