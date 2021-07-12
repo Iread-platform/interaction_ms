@@ -7,6 +7,7 @@ namespace iread_interaction_ms.DataAccess.Interface
         IInteractionRepo GetInteractionRepo { get; }
         ICommentRepository GetCommentsRepo { get; }
         IDrawingRepository GetDrawingRepo { get; }
+        IHighLightRepository GetHighLightRepo { get; }
 
     }
 }

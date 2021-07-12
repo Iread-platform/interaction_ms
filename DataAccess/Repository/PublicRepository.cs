@@ -9,7 +9,7 @@ namespace iread_interaction_ms.DataAccess.Repository
         private IInteractionRepo _interactionRepo;
         private IAudioRepository _audioRepository;
         private ICommentRepository _commentRepository;
-
+        private IHighLightRepository _highLightRepository;
         private IDrawingRepository _drawingRepository;
 
         
@@ -41,11 +41,18 @@ namespace iread_interaction_ms.DataAccess.Repository
             }
         }
 
-         public IDrawingRepository GetDrawingRepo
+        public IDrawingRepository GetDrawingRepo
         {
             get
             {
                 return _drawingRepository ??= new DrawingRepository(_context);
+            }
+        }
+        public IHighLightRepository GetHighLightRepo
+        {
+            get
+            {
+                return _highLightRepository ??= new HighLightRepository(_context);
             }
         }
 
