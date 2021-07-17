@@ -15,6 +15,8 @@ namespace iread_interaction_ms.DataAccess.Interface
 
         public void Update(int id, Audio audio, Audio oldAudio);
 
-        Task<bool> IsSInteractionHasAudio(int  interactionId);
+        public Task<Audio> GetByInteractionId(int id);
+
+        Task<bool> HasAudio(int  interactionId);
     }
 }

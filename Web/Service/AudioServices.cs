@@ -32,9 +32,9 @@ namespace iread_interaction_ms.Web.Service
             }
         }
 
-        public async Task<bool> IsInteractionHasAudio(int  interactionId)
+        public async Task<bool> HasAudio(int  interactionId)
         {
-            return await _publicRepository.GetAudioRepo.IsSInteractionHasAudio(interactionId);
+            return await _publicRepository.GetAudioRepo.HasAudio(interactionId);
         }
     }
 }
