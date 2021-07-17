@@ -16,16 +16,16 @@ namespace iread_interaction_ms.Web.Controller
     public class AudioController:ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly AudioServices _audioServices;
+        private readonly AudioService _audioService;
         private readonly InteractionsService _interactionsService;
         private readonly IConsulHttpClientService _consulHttpClient;
         private readonly string _attachmentsMs = "attachment_ms";
 
-        public AudioController(AudioServices audioServices, IMapper mapper,
+        public AudioController(AudioService audioService, IMapper mapper,
          InteractionsService interactionsService,
           IConsulHttpClientService consulHttpClient)
         {
-            _audioServices = audioServices;
+            _audioService = audioService;
             _mapper = mapper;
             _interactionsService = interactionsService;
             _consulHttpClient = consulHttpClient;
@@ -37,7 +37,24 @@ namespace iread_interaction_ms.Web.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAudio([FromRoute]int id)
         {
-            Audio audio = await _audioServices.GetAudioById(id);
+            Audio audio = await _audioService.GetAudioById(id);
+
+            if (audio == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<AudioDto>(audio));
+        }
+
+
+         // GET: api/interaction/audio/get-by-interaction/1
+        [HttpGet("get-by-interaction/{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
+        {
+            Audio audio = await _audioService.GetByInteractionId(id);
 
             if (audio == null)
             {
@@ -65,7 +82,7 @@ namespace iread_interaction_ms.Web.Controller
             Audio audioEntity = _mapper.Map<Audio>(audioCreateDto);
             
             //for check if story has an audio
-            if (await _audioServices.HasAudio(audioEntity.InteractionId))
+            if (await _audioService.HasAudio(audioEntity.InteractionId))
             {
                 ModelState.AddModelError("Audio", ErrorMessage.AUDIO_ALREADY_EXIST);
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
@@ -91,7 +108,7 @@ namespace iread_interaction_ms.Web.Controller
                 Console.WriteLine(e.Message);
             }
             
-            if (!_audioServices.InsertAudio(audioEntity))
+            if (!_audioService.InsertAudio(audioEntity))
             {
                 return BadRequest();
             }

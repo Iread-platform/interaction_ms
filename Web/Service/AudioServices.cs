@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.Web.Service
 {
-    public class AudioServices
+    public class AudioService
     {
         private readonly IPublicRepository _publicRepository;
 
-        public AudioServices(IPublicRepository publicRepository)
+        public AudioService(IPublicRepository publicRepository)
         {
             _publicRepository = publicRepository;
         }
@@ -35,6 +35,11 @@ namespace iread_interaction_ms.Web.Service
         public async Task<bool> HasAudio(int  interactionId)
         {
             return await _publicRepository.GetAudioRepo.HasAudio(interactionId);
+        }
+
+        public async Task<Audio> GetByInteractionId(int id)
+        {
+            return await _publicRepository.GetAudioRepo.GetByInteractionId(id);
         }
     }
 }

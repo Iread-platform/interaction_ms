@@ -53,5 +53,10 @@ namespace iread_interaction_ms.DataAccess.Repository
         {
             return _context.Audios.Any(a => a.InteractionId == interactionId);
         }
+
+        public async Task<Audio> GetByInteractionId(int id)
+        {
+             return await _context.Audios.FirstOrDefaultAsync(a => a.InteractionId == id);
+        }
     }
 }
