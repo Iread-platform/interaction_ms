@@ -35,9 +35,9 @@ namespace iread_interaction_ms.Web.Controller
         [HttpGet("get/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAudio([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute]int id)
         {
-            Audio audio = await _audioService.GetAudioById(id);
+            Audio audio = await _audioService.GetById(id);
 
             if (audio == null)
             {
@@ -108,7 +108,7 @@ namespace iread_interaction_ms.Web.Controller
                 Console.WriteLine(e.Message);
             }
             
-            if (!_audioService.InsertAudio(audioEntity))
+            if (!_audioService.Insert(audioEntity))
             {
                 return BadRequest();
             }

@@ -14,12 +14,12 @@ namespace iread_interaction_ms.Web.Service
             _publicRepository = publicRepository;
         }
 
-        public async Task<Audio> GetAudioById(int id)
+        public async Task<Audio> GetById(int id)
         {
             return await _publicRepository.GetAudioRepo.GetById(id);
         }
 
-        public bool InsertAudio(Audio audio)
+        public bool Insert(Audio audio)
         {
             try
             {

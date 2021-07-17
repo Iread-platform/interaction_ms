@@ -18,7 +18,7 @@ namespace iread_interaction_ms.DataAccess.Repository
 
         public async Task<Audio> GetById(int id)
         {
-            return await _context.Audios.FindAsync(id);
+            return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.AudioId == id);
         }
 
         public void Insert(Audio audio)
@@ -56,7 +56,7 @@ namespace iread_interaction_ms.DataAccess.Repository
 
         public async Task<Audio> GetByInteractionId(int id)
         {
-             return await _context.Audios.FirstOrDefaultAsync(a => a.InteractionId == id);
+             return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.InteractionId == id);
         }
     }
 }
