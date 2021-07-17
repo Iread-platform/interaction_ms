@@ -65,7 +65,7 @@ namespace iread_interaction_ms.Web.Controller
             Audio audioEntity = _mapper.Map<Audio>(audioCreateDto);
             
             //for check if story has an audio
-            if (await _audioServices.IsInteractionHasAudio(audioEntity.InteractionId))
+            if (await _audioServices.HasAudio(audioEntity.InteractionId))
             {
                 ModelState.AddModelError("Audio", ErrorMessage.AUDIO_ALREADY_EXIST);
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
