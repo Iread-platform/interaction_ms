@@ -41,5 +41,10 @@ namespace iread_interaction_ms.Web.Service
         {
             return await _publicRepository.GetAudioRepo.GetByInteractionId(id);
         }
+
+        public void Delete(Audio audio)
+        {
+            _publicRepository.GetInteractionRepo.Delete(audio.Interaction);
+        }
     }
 }

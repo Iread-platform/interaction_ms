@@ -115,6 +115,24 @@ namespace iread_interaction_ms.Web.Controller
 
             return CreatedAtAction("GetAudio", new { id = audioEntity.AudioId }, _mapper.Map<AudioDto>(audioEntity));
         }
+
+        // DELETE: api/interaction/audio/5/delete
+        [HttpDelete("{id}/delete")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+            var audio = _audioService.GetById(id).Result;
+            if (audio == null)
+            {
+                return NotFound();
+            }
+
+           _audioService.Delete(audio);
+            return NoContent();
+        }
         
     }
 }
