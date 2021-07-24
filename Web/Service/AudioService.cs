@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,11 @@ namespace iread_interaction_ms.Web.Service
         public void Delete(Audio audio)
         {
             _publicRepository.GetInteractionRepo.Delete(audio.Interaction);
+        }
+
+        internal void Update(Audio audioEntity, Audio oldAudio)
+        {
+            _publicRepository.GetAudioRepo.Update(audioEntity, oldAudio);
         }
     }
 }

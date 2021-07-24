@@ -13,10 +13,10 @@ namespace iread_interaction_ms.DataAccess.Interface
 
         public bool Exists(int id);
 
-        public void Update(int id, Audio audio, Audio oldAudio);
-
         public Task<Audio> GetByInteractionId(int id);
 
-        Task<bool> HasAudio(int  interactionId);
+        public Task<bool> HasAudio(int  interactionId);
+
+        public void Update(Audio audioEntity, Audio oldAudio);
     }
 }

@@ -98,7 +98,36 @@ namespace iread_interaction_ms.Web.Controller
             return CreatedAtAction("GetById", new { id = audioEntity.AudioId }, _mapper.Map<AudioDto>(audioEntity));
         }
 
-        // DELETE: api/interaction/audio/5/delete
+
+        [HttpPut("{id}/update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody] AudioUpdateDto audio, [FromRoute] int id)
+        {
+             if (audio == null)
+            {
+                return BadRequest();
+            }            
+            
+            Audio oldAudio = _audioService.GetById(id).Result;
+             if (oldAudio == null)
+            {
+                return NotFound();
+            }
+
+            Audio audioEntity = _mapper.Map<Audio>(audio);
+            ValidationLogicForUpdating(audioEntity);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ErrorMessage.ModelStateParser(ModelState));
+            }
+            
+            audioEntity.AudioId = id;
+            _audioService.Update(audioEntity, oldAudio);
+            return NoContent();
+        }
+
+
+        //DELETE: api/interaction/audio/5/delete
         [HttpDelete("{id}/delete")]
         public IActionResult Delete([FromRoute] int id)
         {
@@ -156,6 +185,22 @@ namespace iread_interaction_ms.Web.Controller
                 ModelState.AddModelError("StudentId", "User not a student");    
                 }
             }  
+        }
+
+        private void ValidationLogicForUpdating(Audio audio)
+        {
+            AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{audio.AttachmentId}").Result;
+
+            if(attachmentDto == null || attachmentDto.Id < 1){
+                ModelState.AddModelError("AudioId", "Attachment not found");    
+            }
+            else
+            {
+                if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+                {
+                    ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
+                }
+            }
         }
     }
 }

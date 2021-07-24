@@ -40,12 +40,13 @@ namespace iread_interaction_ms.DataAccess.Repository
             return _context.Audios.Any(a => a.AudioId == id);
         }
 
-        public void Update(int id, Audio audio, Audio oldAudio)
+       public void Update(Audio audio, Audio oldAudio)
         {
-            _context.Entry(oldAudio).State = EntityState.Modified;
-            _context.Audios.Attach(oldAudio);
-            oldAudio.AttachmentId = audio.AttachmentId;
-            _context.Update(oldAudio);
+            _context.Entry(oldAudio).State = EntityState.Deleted;
+            _context.Audios.Attach(audio);
+            _context.Entry(audio).State = EntityState.Modified;
+            _context.Entry(audio).Reference(c => c.Interaction).IsModified = false;
+            _context.Entry(audio).Property(c => c.InteractionId).IsModified = false;
             _context.SaveChanges();
         }
 

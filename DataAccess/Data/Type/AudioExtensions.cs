@@ -11,8 +11,7 @@ namespace iread_interaction_ms.DataAccess.Data.Type
                                                                 ".wav",
                                                                 ".m4a",
                                                                 ".flac",
-                                                                ".mp3",
-                                                                ".mp4"};                                                                
+                                                                ".mp3"};                                                                
 
     }
 }
