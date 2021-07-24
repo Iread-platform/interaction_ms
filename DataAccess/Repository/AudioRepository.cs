@@ -18,7 +18,7 @@ namespace iread_interaction_ms.DataAccess.Repository
 
         public async Task<Audio> GetById(int id)
         {
-            return await _context.Audios.FindAsync(id);
+            return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.AudioId == id);
         }
 
         public void Insert(Audio audio)
@@ -40,18 +40,24 @@ namespace iread_interaction_ms.DataAccess.Repository
             return _context.Audios.Any(a => a.AudioId == id);
         }
 
-        public void Update(int id, Audio audio, Audio oldAudio)
+       public void Update(Audio audio, Audio oldAudio)
         {
-            _context.Entry(oldAudio).State = EntityState.Modified;
-            _context.Audios.Attach(oldAudio);
-            oldAudio.AttachmentId = audio.AttachmentId;
-            _context.Update(oldAudio);
+            _context.Entry(oldAudio).State = EntityState.Deleted;
+            _context.Audios.Attach(audio);
+            _context.Entry(audio).State = EntityState.Modified;
+            _context.Entry(audio).Reference(c => c.Interaction).IsModified = false;
+            _context.Entry(audio).Property(c => c.InteractionId).IsModified = false;
             _context.SaveChanges();
         }
 
-        public async Task<bool> IsSInteractionHasAudio(int  interactionId)
+        public async Task<bool> HasAudio(int  interactionId)
         {
             return _context.Audios.Any(a => a.InteractionId == interactionId);
+        }
+
+        public async Task<Audio> GetByInteractionId(int id)
+        {
+             return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.InteractionId == id);
         }
     }
 }

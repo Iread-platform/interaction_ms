@@ -85,7 +85,7 @@ namespace iread_interaction_ms
             // Inject the public repository
             services.AddScoped<IPublicRepository, PublicRepository>();
             
-            services.AddScoped<AudioServices>();
+            services.AddScoped<AudioService>();
             services.AddScoped<CommentsService>();
             services.AddScoped<InteractionsService>();
             services.AddScoped<DrawingService>();
