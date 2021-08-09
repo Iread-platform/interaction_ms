@@ -10,12 +10,14 @@ using iread_interaction_ms.Web.DTO.Story;
 using iread_interaction_ms.Web.DTO.StoryDto;
 using iread_interaction_ms.Web.Dto;
 using iread_interaction_ms.DataAccess.Data.Type;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace iread_interaction_ms.Web.Controller
 {
     [ApiController]
     [Route("api/Interaction/[controller]/")]
-    public class HighLightController:ControllerBase
+    public class HighLightController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly HighLightService _highLightService;
@@ -29,12 +31,12 @@ namespace iread_interaction_ms.Web.Controller
             _interactionServices = interactionServices;
             _consulHttpClient = consulHttpClient;
         }
-        
+
         // GET: api/interaction/highLight/1/get
         [HttpGet("{id}/get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             HighLight highLight = await _highLightService.GetById(id);
 
@@ -50,7 +52,7 @@ namespace iread_interaction_ms.Web.Controller
         [HttpGet("get-by-interaction/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
+        public async Task<IActionResult> GetByInteractionId([FromRoute] int id)
         {
             HighLight highLight = await _highLightService.GetByInteractionId(id);
 
@@ -60,6 +62,22 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             return Ok(_mapper.Map<HighLightDto>(highLight));
+        }
+
+        // GET: api/interaction/highLight/get-by-page/1
+        [HttpGet("get-by-page/{pageId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByPageId([FromRoute] int pageId)
+        {
+            List<HighLight> highLights = await _highLightService.GetByPageId(pageId);
+
+            if (highLights == null || !highLights.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<List<HighLightDto>>(highLights));
         }
 
 
@@ -81,7 +99,7 @@ namespace iread_interaction_ms.Web.Controller
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
 
-           
+
             if (!_highLightService.Insert(highLight))
             {
                 return BadRequest();
@@ -94,13 +112,13 @@ namespace iread_interaction_ms.Web.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Update([FromBody] HighLightUpdateDto highLight, [FromRoute] int id)
         {
-             if (highLight == null)
+            if (highLight == null)
             {
                 return BadRequest();
-            }            
-            
+            }
+
             HighLight oldHighLight = _highLightService.GetById(id).Result;
-             if (oldHighLight == null)
+            if (oldHighLight == null)
             {
                 return NotFound();
             }
@@ -127,42 +145,45 @@ namespace iread_interaction_ms.Web.Controller
                 return NotFound();
             }
 
-           _highLightService.Delete(highLight);
+            _highLightService.Delete(highLight);
             return NoContent();
         }
 
 
-    private void ValidationLogicForAdding(HighLight highLight)
-    {
-
-        ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{highLight.Interaction.StoryId}").Result;
-
-        if(storyDto == null || storyDto.StoryId < 1){
-             ModelState.AddModelError("StoryId", "Story not found");    
-        }
-
-        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{highLight.Interaction.PageId}").Result;
-
-        if(pageDto == null || pageDto.PageId < 1){
-             ModelState.AddModelError("PageId", "Page not found");    
-        }
-
-        UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{highLight.Interaction.StudentId}/get").Result;
-
-        if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
-             ModelState.AddModelError("StudentId", "Student not found");    
-        }
-        else
+        private void ValidationLogicForAdding(HighLight highLight)
         {
-            if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
+
+            ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{highLight.Interaction.StoryId}").Result;
+
+            if (storyDto == null || storyDto.StoryId < 1)
             {
-             ModelState.AddModelError("StudentId", "User not a student");    
+                ModelState.AddModelError("StoryId", "Story not found");
             }
-        }        
-    }
+
+            PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{highLight.Interaction.PageId}").Result;
+
+            if (pageDto == null || pageDto.PageId < 1)
+            {
+                ModelState.AddModelError("PageId", "Page not found");
+            }
+
+            UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{highLight.Interaction.StudentId}/get").Result;
+
+            if (userDto == null || string.IsNullOrEmpty(userDto.Id))
+            {
+                ModelState.AddModelError("StudentId", "Student not found");
+            }
+            else
+            {
+                if (!userDto.Role.Equals(RoleTypes.Student.ToString()))
+                {
+                    ModelState.AddModelError("StudentId", "User not a student");
+                }
+            }
+        }
 
     }
 
 
-    
+
 }

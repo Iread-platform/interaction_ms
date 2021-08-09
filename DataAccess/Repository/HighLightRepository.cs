@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.DataAccess.Repository
 {
-    public class HighLightRepository :IHighLightRepository
+    public class HighLightRepository : IHighLightRepository
     {
         private readonly AppDbContext _context;
 
@@ -53,5 +54,10 @@ namespace iread_interaction_ms.DataAccess.Repository
             _context.Entry(highLight).Property(h => h.InteractionId).IsModified = false;
             _context.SaveChanges();
         }
-    }            
+
+        public async Task<List<HighLight>> GetByPageId(int pageId)
+        {
+            return await _context.HighLights.Include(a => a.Interaction).Where(a => a.Interaction.PageId == pageId).ToListAsync();
+        }
+    }
 }
