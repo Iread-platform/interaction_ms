@@ -216,18 +216,24 @@ namespace iread_interaction_ms.Web.Controller
 
         private void ValidationLogicForUpdating(Drawing drawing)
         {
-            AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
+            if (drawing.AudioId != 0)
+            {
 
-            if (attachmentDto == null || attachmentDto.Id < 1)
-            {
-                ModelState.AddModelError("StudentId", "Audio not found");
-            }
-            else
-            {
-                if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+                AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
+
+                if (attachmentDto == null || attachmentDto.Id < 1)
                 {
-                    ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) + "]");
+                    ModelState.AddModelError("Audio", "Audio not found");
                 }
+                else
+                {
+                    if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+                    {
+                        ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) + "]");
+                    }
+                }
+
+
             }
 
         }

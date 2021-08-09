@@ -6,7 +6,7 @@ using iread_interaction_ms.Web.Dto.InteractioDto;
 
 namespace iread_interaction_ms.Web.Profile
 {
-    public class AutoMapperProfile:AutoMapper.Profile
+    public class AutoMapperProfile : AutoMapper.Profile
     {
         public AutoMapperProfile()
         {
@@ -14,7 +14,7 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<Audio, AudioDto>().ReverseMap();
             CreateMap<Audio, AudioCreateDto>().ReverseMap();
             CreateMap<Audio, AudioUpdateDto>().ReverseMap();
-            
+
             //Interaction Mapper
             CreateMap<InteractionCreateDto, Interaction>().ReverseMap();
             CreateMap<Interaction, InnerInteractionDto>().ReverseMap();
@@ -39,13 +39,15 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<Comment, CommentDto>().ReverseMap();
             CreateMap<CommentCreateDto, Comment>().ReverseMap();
             CreateMap<CommentUpdateDto, Comment>().ReverseMap();
-           
-            
+
+
             //Drawing Mapper
             CreateMap<Drawing, DrawingDto>().ReverseMap();
             CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
-            CreateMap<DrawingUpdateDto, Drawing>().ReverseMap();
-            
+            CreateMap<DrawingUpdateDto, Drawing>().ForMember(dest =>
+            dest.AudioId,
+            opt => opt.MapFrom(src => src.AudioId == null ? 0 : src.AudioId));
+
 
             //HighLight Mapper
             CreateMap<HighLight, HighLightDto>().ReverseMap();
