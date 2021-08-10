@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
@@ -33,7 +34,7 @@ namespace iread_interaction_ms.Web.Service
             }
         }
 
-        public async Task<bool> HasAudio(int  interactionId)
+        public async Task<bool> HasAudio(int interactionId)
         {
             return await _publicRepository.GetAudioRepo.HasAudio(interactionId);
         }
@@ -51,6 +52,11 @@ namespace iread_interaction_ms.Web.Service
         internal void Update(Audio audioEntity, Audio oldAudio)
         {
             _publicRepository.GetAudioRepo.Update(audioEntity, oldAudio);
+        }
+
+        public async Task<List<Audio>> GetByPageId(int pageId)
+        {
+            return await _publicRepository.GetAudioRepo.GetByPageId(pageId);
         }
     }
 }

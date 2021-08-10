@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.DataAccess.Repository
 {
-    public class CommentRepository :ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
         private readonly AppDbContext _context;
 
@@ -60,5 +61,11 @@ namespace iread_interaction_ms.DataAccess.Repository
             _context.SaveChanges();
 
         }
-    }            
+
+        public async Task<List<Comment>> GetByPageId(int pageId)
+        {
+            return await _context.Comments.Include(a => a.Interaction).Where(a => a.Interaction.PageId == pageId).ToListAsync();
+
+        }
+    }
 }

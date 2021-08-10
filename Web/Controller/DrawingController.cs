@@ -18,7 +18,7 @@ namespace iread_interaction_ms.Web.Controller
 {
     [ApiController]
     [Route("api/Interaction/[controller]/")]
-    public class DrawingController:ControllerBase
+    public class DrawingController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly DrawingService _drawingService;
@@ -32,12 +32,12 @@ namespace iread_interaction_ms.Web.Controller
             _interactionServices = interactionServices;
             _consulHttpClient = consulHttpClient;
         }
-        
+
         // GET: api/interaction/drawing/1/get
         [HttpGet("{id}/get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             Drawing drawing = await _drawingService.GetById(id);
 
@@ -49,11 +49,27 @@ namespace iread_interaction_ms.Web.Controller
             return Ok(_mapper.Map<DrawingDto>(drawing));
         }
 
+        // GET: api/interaction/drawing/get-by-page/1
+        [HttpGet("get-by-page/{pageId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByPageId([FromRoute] int pageId)
+        {
+            List<Drawing> drawings = await _drawingService.GetByPageId(pageId);
+
+            if (drawings == null || !drawings.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<List<DrawingDto>>(drawings));
+        }
+
         // GET: api/interaction/drawing/get-by-interaction/1
         [HttpGet("get-by-interaction/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByInteractionId([FromRoute]int id)
+        public async Task<IActionResult> GetByInteractionId([FromRoute] int id)
         {
             Drawing drawing = await _drawingService.GetByInteractionId(id);
 
@@ -84,7 +100,7 @@ namespace iread_interaction_ms.Web.Controller
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
 
-           
+
             if (!_drawingService.Insert(drawing))
             {
                 return BadRequest();
@@ -97,13 +113,13 @@ namespace iread_interaction_ms.Web.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Update([FromBody] DrawingUpdateDto drawing, [FromRoute] int id)
         {
-             if (drawing == null)
+            if (drawing == null)
             {
                 return BadRequest();
-            }            
-            
+            }
+
             Drawing oldDrawing = _drawingService.GetById(id).Result;
-             if (oldDrawing == null)
+            if (oldDrawing == null)
             {
                 return NotFound();
             }
@@ -114,7 +130,7 @@ namespace iread_interaction_ms.Web.Controller
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
             }
-            
+
             drawingEntity.DrawingId = id;
             _drawingService.Update(drawingEntity, oldDrawing);
             return NoContent();
@@ -136,76 +152,88 @@ namespace iread_interaction_ms.Web.Controller
                 return NotFound();
             }
 
-           _drawingService.Delete(drawing);
+            _drawingService.Delete(drawing);
             return NoContent();
         }
 
 
-    private void ValidationLogicForAdding(Drawing drawing)
-    {
-
-        ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{drawing.Interaction.StoryId}").Result;
-
-        if(storyDto == null || storyDto.StoryId < 1){
-             ModelState.AddModelError("StoryId", "Story not found");    
-        }
-
-        PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{drawing.Interaction.PageId}").Result;
-
-        if(pageDto == null || pageDto.PageId < 1){
-             ModelState.AddModelError("PageId", "Page not found");    
-        }
-
-        UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{drawing.Interaction.StudentId}/get").Result;
-
-        if(userDto == null || string.IsNullOrEmpty(userDto.Id)){
-             ModelState.AddModelError("StudentId", "Student not found");    
-        }
-        else
+        private void ValidationLogicForAdding(Drawing drawing)
         {
-            if(!userDto.Role.Equals(RoleTypes.Student.ToString()))
+
+            ViewStoryDto storyDto = _consulHttpClient.GetAsync<ViewStoryDto>("story_ms", $"/api/story/get/{drawing.Interaction.StoryId}").Result;
+
+            if (storyDto == null || storyDto.StoryId < 1)
             {
-             ModelState.AddModelError("StudentId", "User not a student");    
+                ModelState.AddModelError("StoryId", "Story not found");
             }
-        }
-        
-        if(drawing.AudioId == 0){
-            // if audio not passed don't check
-            return;              
-        }                                                                                                              
 
-        AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
+            PageDto pageDto = _consulHttpClient.GetAsync<PageDto>("story_ms", $"/api/story/Page/get/{drawing.Interaction.PageId}").Result;
 
-        if(attachmentDto == null || attachmentDto.Id < 1){
-             ModelState.AddModelError("AudioId", "Audio not found");    
-        }
-        else
-        {
-            if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+            if (pageDto == null || pageDto.PageId < 1)
             {
-                ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
+                ModelState.AddModelError("PageId", "Page not found");
             }
-        }
-        if (!JsonUtils.ValidateJSON(drawing.Points))
-        {
-            ModelState.AddModelError("Points", "Points should has json formate");
-        }
-        
-    }
 
-    private void ValidationLogicForUpdating(Drawing drawing)
-        {
+            UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{drawing.Interaction.StudentId}/get").Result;
+
+            if (userDto == null || string.IsNullOrEmpty(userDto.Id))
+            {
+                ModelState.AddModelError("StudentId", "Student not found");
+            }
+            else
+            {
+                if (!userDto.Role.Equals(RoleTypes.Student.ToString()))
+                {
+                    ModelState.AddModelError("StudentId", "User not a student");
+                }
+            }
+
+            if (drawing.AudioId == 0)
+            {
+                // if audio not passed don't check
+                return;
+            }
+
             AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
 
-            if(attachmentDto == null || attachmentDto.Id < 1){
-                ModelState.AddModelError("StudentId", "Audio not found");    
+            if (attachmentDto == null || attachmentDto.Id < 1)
+            {
+                ModelState.AddModelError("AudioId", "Audio not found");
             }
             else
             {
                 if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
                 {
-                    ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) +"]");
+                    ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) + "]");
                 }
+            }
+            if (!JsonUtils.ValidateJSON(drawing.Points))
+            {
+                ModelState.AddModelError("Points", "Points should has json formate");
+            }
+
+        }
+
+        private void ValidationLogicForUpdating(Drawing drawing)
+        {
+            if (drawing.AudioId != 0)
+            {
+
+                AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
+
+                if (attachmentDto == null || attachmentDto.Id < 1)
+                {
+                    ModelState.AddModelError("Audio", "Audio not found");
+                }
+                else
+                {
+                    if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
+                    {
+                        ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) + "]");
+                    }
+                }
+
+
             }
 
         }
@@ -214,5 +242,5 @@ namespace iread_interaction_ms.Web.Controller
     }
 
 
-    
+
 }

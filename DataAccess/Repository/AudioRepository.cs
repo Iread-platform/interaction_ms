@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data;
 using iread_interaction_ms.DataAccess.Data.Entity;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.DataAccess.Repository
 {
-    public class AudioRepository :IAudioRepository
+    public class AudioRepository : IAudioRepository
     {
         private readonly AppDbContext _context;
 
@@ -40,7 +41,7 @@ namespace iread_interaction_ms.DataAccess.Repository
             return _context.Audios.Any(a => a.AudioId == id);
         }
 
-       public void Update(Audio audio, Audio oldAudio)
+        public void Update(Audio audio, Audio oldAudio)
         {
             _context.Entry(oldAudio).State = EntityState.Deleted;
             _context.Audios.Attach(audio);
@@ -50,14 +51,20 @@ namespace iread_interaction_ms.DataAccess.Repository
             _context.SaveChanges();
         }
 
-        public async Task<bool> HasAudio(int  interactionId)
+        public async Task<bool> HasAudio(int interactionId)
         {
             return _context.Audios.Any(a => a.InteractionId == interactionId);
         }
 
         public async Task<Audio> GetByInteractionId(int id)
         {
-             return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.InteractionId == id);
+            return await _context.Audios.Include(a => a.Interaction).FirstOrDefaultAsync(a => a.InteractionId == id);
+        }
+
+        public async Task<List<Audio>> GetByPageId(int pageId)
+        {
+            return await _context.Audios.Include(a => a.Interaction).Where(a => a.Interaction.PageId == pageId).ToListAsync();
+
         }
     }
 }

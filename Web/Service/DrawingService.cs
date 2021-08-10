@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
@@ -20,7 +21,7 @@ namespace iread_interaction_ms.Web.Service
         {
             return await _publicRepository.GetDrawingRepo.GetById(id);
         }
-        
+
         public async Task<Drawing> GetByInteractionId(int id)
         {
             return await _publicRepository.GetDrawingRepo.GetByInteractionId(id);
@@ -52,6 +53,11 @@ namespace iread_interaction_ms.Web.Service
         internal void Delete(Drawing drawing)
         {
             _publicRepository.GetInteractionRepo.Delete(drawing.Interaction);
+        }
+
+        public async Task<List<Drawing>> GetByPageId(int pageId)
+        {
+            return await _publicRepository.GetDrawingRepo.GetByPageId(pageId);
         }
     }
 }
