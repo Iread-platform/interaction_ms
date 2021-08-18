@@ -46,7 +46,11 @@ namespace iread_interaction_ms.Web.Controller
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<DrawingDto>(drawing));
+            var drawingDto = _mapper.Map<DrawingWithAudioDto>(drawing);
+            if (drawing.AudioId != 0)
+                drawingDto.Audio = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{drawing.AudioId}").Result;
+
+            return Ok(drawingDto);
         }
 
         // GET: api/interaction/drawing/get-by-page/1

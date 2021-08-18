@@ -44,6 +44,11 @@ namespace iread_interaction_ms.Web.Profile
             //Drawing Mapper
             CreateMap<Drawing, DrawingDto>().ReverseMap();
             CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
+            CreateMap<Drawing, DrawingWithAudioDto>().ReverseMap().ForMember(dest =>
+            dest.AudioId,
+            opt => opt.MapFrom(src => src.Audio == null));
+
+
             CreateMap<DrawingUpdateDto, Drawing>().ForMember(dest =>
             dest.AudioId,
             opt => opt.MapFrom(src => src.AudioId == null ? 0 : src.AudioId));
