@@ -174,7 +174,7 @@ namespace iread_interaction_ms.Web.Controller
                 ModelState.AddModelError("PageId", "Page not found");
             }
 
-            UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity_ms/SysUsers/{drawing.Interaction.StudentId}/get").Result;
+            UserDto userDto = _consulHttpClient.GetAsync<UserDto>("identity_ms", $"/api/identity/{drawing.Interaction.StudentId}/get").Result;
 
             if (userDto == null || string.IsNullOrEmpty(userDto.Id))
             {
