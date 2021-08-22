@@ -16,6 +16,7 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public Nullable<int> MaxY { get; set; }
         public Nullable<int> MinX { get; set; }
         public Nullable<int> MinY { get; set; }
+        public string Color { get; set; }
 
     }
 }
