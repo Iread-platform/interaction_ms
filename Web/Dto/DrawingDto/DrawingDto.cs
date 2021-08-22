@@ -13,10 +13,10 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public string AudioId { get; set; }
         public InnerInteractionDto Interaction { get; set; }
         public string Points { get; set; }
-        public Nullable<int> MaxX { get; set; }
-        public Nullable<int> MaxY { get; set; }
-        public Nullable<int> MinX { get; set; }
-        public Nullable<int> MinY { get; set; }
+        public Nullable<double> MaxX { get; set; }
+        public Nullable<double> MaxY { get; set; }
+        public Nullable<double> MinX { get; set; }
+        public Nullable<double> MinY { get; set; }
         public string Color { get; set; }
 
 

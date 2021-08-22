@@ -18,13 +18,13 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public string Comment { get; set; }
 
         [Required]
-        public Nullable<int> MaxX { get; set; }
+        public Nullable<double> MaxX { get; set; }
         [Required]
-        public Nullable<int> MaxY { get; set; }
+        public Nullable<double> MaxY { get; set; }
         [Required]
-        public Nullable<int> MinX { get; set; }
+        public Nullable<double> MinX { get; set; }
         [Required]
-        public Nullable<int> MinY { get; set; }
+        public Nullable<double> MinY { get; set; }
         [Required(AllowEmptyStrings = false)]
         public string Color { get; set; }
 

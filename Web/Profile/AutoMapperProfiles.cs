@@ -42,12 +42,26 @@ namespace iread_interaction_ms.Web.Profile
 
 
             //Drawing Mapper
-            CreateMap<Drawing, DrawingDto>().ReverseMap();
-            CreateMap<DrawingCreateDto, Drawing>().ReverseMap();
-            CreateMap<Drawing, DrawingWithAudioDto>().ReverseMap().ForMember(dest =>
+            CreateMap<Drawing, DrawingDto>().ReverseMap()
+            .ForMember(dest => dest.Max_X, opt => opt.MapFrom(src => src.MaxX))
+            .ForMember(dest => dest.Max_Y, opt => opt.MapFrom(src => src.MaxY))
+            .ForMember(dest => dest.Min_X, opt => opt.MapFrom(src => src.MinX))
+            .ForMember(dest => dest.Min_Y, opt => opt.MapFrom(src => src.MinY));
+
+            CreateMap<Drawing, DrawingCreateDto>().ReverseMap()
+           .ForMember(dest => dest.Max_X, opt => opt.MapFrom(src => src.MaxX))
+           .ForMember(dest => dest.Max_Y, opt => opt.MapFrom(src => src.MaxY))
+           .ForMember(dest => dest.Min_X, opt => opt.MapFrom(src => src.MinX))
+           .ForMember(dest => dest.Min_Y, opt => opt.MapFrom(src => src.MinY));
+
+            CreateMap<Drawing, DrawingWithAudioDto>().ReverseMap()
+            .ForMember(dest => dest.Max_X, opt => opt.MapFrom(src => src.MaxX))
+            .ForMember(dest => dest.Max_Y, opt => opt.MapFrom(src => src.MaxY))
+            .ForMember(dest => dest.Min_X, opt => opt.MapFrom(src => src.MinX))
+            .ForMember(dest => dest.Min_Y, opt => opt.MapFrom(src => src.MinY))
+            .ForMember(dest =>
             dest.AudioId,
             opt => opt.MapFrom(src => src.Audio == null));
-
 
             CreateMap<DrawingUpdateDto, Drawing>().ForMember(dest =>
             dest.AudioId,
