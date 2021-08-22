@@ -12,10 +12,10 @@ namespace iread_interaction_ms.Web.Dto.CommentDto
         public AttachmentDTO Audio { get; set; } = null;
         public InnerInteractionDto Interaction { get; set; }
         public string Points { get; set; }
-        public Nullable<double> MaxX { get; set; }
-        public Nullable<double> MaxY { get; set; }
-        public Nullable<double> MinX { get; set; }
-        public Nullable<double> MinY { get; set; }
+        public double MaxX { get; set; }
+        public double MaxY { get; set; }
+        public double MinX { get; set; }
+        public double MinY { get; set; }
         public string Color { get; set; }
 
     }

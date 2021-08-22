@@ -54,14 +54,12 @@ namespace iread_interaction_ms.Web.Profile
            .ForMember(dest => dest.Min_X, opt => opt.MapFrom(src => src.MinX))
            .ForMember(dest => dest.Min_Y, opt => opt.MapFrom(src => src.MinY));
 
-            CreateMap<Drawing, DrawingWithAudioDto>().ReverseMap()
-            .ForMember(dest => dest.Max_X, opt => opt.MapFrom(src => src.MaxX))
-            .ForMember(dest => dest.Max_Y, opt => opt.MapFrom(src => src.MaxY))
-            .ForMember(dest => dest.Min_X, opt => opt.MapFrom(src => src.MinX))
-            .ForMember(dest => dest.Min_Y, opt => opt.MapFrom(src => src.MinY))
-            .ForMember(dest =>
-            dest.AudioId,
-            opt => opt.MapFrom(src => src.Audio == null));
+
+            CreateMap<Drawing, DrawingWithAudioDto>()
+            .ForMember(dest => dest.MaxX, opt => opt.MapFrom(src => src.Max_X))
+            .ForMember(dest => dest.MaxY, opt => opt.MapFrom(src => src.Max_Y))
+            .ForMember(dest => dest.MinX, opt => opt.MapFrom(src => src.Min_X))
+            .ForMember(dest => dest.MinY, opt => opt.MapFrom(src => src.Min_Y));
 
             CreateMap<DrawingUpdateDto, Drawing>().ForMember(dest =>
             dest.AudioId,
