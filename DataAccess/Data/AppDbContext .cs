@@ -14,7 +14,7 @@ namespace iread_interaction_ms.DataAccess.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
         }
 
 
@@ -26,10 +26,10 @@ namespace iread_interaction_ms.DataAccess.Data
             .WithMany(i => i.Comments)
             .OnDelete(DeleteBehavior.Cascade);
 
-             modelBuilder.Entity<Drawing>()
-            .HasOne(d => d.Interaction)
-            .WithMany(i => i.Drawings)
-            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Drawing>()
+           .HasOne(d => d.Interaction)
+           .WithMany(i => i.Drawings)
+           .OnDelete(DeleteBehavior.Cascade);
         }
 
         //entities
@@ -38,6 +38,8 @@ namespace iread_interaction_ms.DataAccess.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Drawing> Drawings { get; set; }
         public DbSet<HighLight> HighLights { get; set; }
+        public DbSet<Reading> Readings { get; set; }
+
 
     }
 }

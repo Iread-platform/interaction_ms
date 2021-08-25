@@ -1,8 +1,10 @@
 
+using System;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.Web.Dto.AudioDto;
 using iread_interaction_ms.Web.Dto.CommentDto;
 using iread_interaction_ms.Web.Dto.InteractioDto;
+using iread_interaction_ms.Web.Dto.ReadingDto;
 
 namespace iread_interaction_ms.Web.Profile
 {
@@ -70,6 +72,16 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<HighLight, HighLightDto>().ReverseMap();
             CreateMap<HighLightCreateDto, HighLight>().ReverseMap();
             CreateMap<HighLightUpdateDto, HighLight>().ReverseMap();
+
+            //Reading Mapper
+            CreateMap<Reading, ReadingDto>().ReverseMap().ForMember(dest =>
+            dest.TimeSpent,
+            opt => opt.MapFrom(src => src.TimeSpent.ToString()));
+            CreateMap<ReadingCreateDto, Reading>().ForMember(dest =>
+            dest.TimeSpent,
+            opt => opt.MapFrom(src => TimeSpan.Parse(src.TimeSpent)));
+            CreateMap<Reading, ReadingWithProgressDto>().ReverseMap();
+
 
         }
     }

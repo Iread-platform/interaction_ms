@@ -23,10 +23,10 @@ namespace iread_interaction_ms
 {
     public class Startup
     {
-         public static readonly Microsoft.Extensions.Logging.LoggerFactory _myLoggerFactory =
-            new LoggerFactory(new[] {
+        public static readonly Microsoft.Extensions.Logging.LoggerFactory _myLoggerFactory =
+           new LoggerFactory(new[] {
         new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider()
-            });
+           });
 
         public Startup(IConfiguration configuration)
         {
@@ -43,15 +43,17 @@ namespace iread_interaction_ms
         public void ConfigureServices(IServiceCollection services)
         {
 
-             // for routing
+            // for routing
             services.AddControllers();
 
 
             // for connection of DB
             services.AddDbContext<AppDbContext>(
-                options => { options.UseLoggerFactory(_myLoggerFactory).UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
+                options =>
+                {
+                    options.UseLoggerFactory(_myLoggerFactory).UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
                 });
-            
+
             // for consul
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
             {
@@ -59,7 +61,7 @@ namespace iread_interaction_ms
                 consulConfig.Address = new Uri(address);
             }));
             services.AddConsulConfig(Configuration);
-            services.AddHttpClient<IConsulHttpClientService,ConsulHttpClientService>();
+            services.AddHttpClient<IConsulHttpClientService, ConsulHttpClientService>();
 
 
             // return only msg of errors as a list when get invalid ModelState in background
@@ -68,32 +70,34 @@ namespace iread_interaction_ms
             {
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
-                var errors = context.ModelState.Values.SelectMany(x => x.Errors.Select (y => y.ErrorMessage));
+                    var errors = context.ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage));
                     return new BadRequestObjectResult(errors);
                 };
-           });
-            
+            });
+
             // for swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "iread_interaction", Version = "v1" });
             });
-            
+
             // Inject the public repository
             services.AddScoped<IPublicRepository, PublicRepository>();
-            
+
             services.AddScoped<AudioService>();
             services.AddScoped<CommentsService>();
             services.AddScoped<InteractionsService>();
             services.AddScoped<DrawingService>();
-             services.AddScoped<HighLightService>();
-            
-            IMapper mapper = new MapperConfiguration(config=>{
+            services.AddScoped<HighLightService>();
+            services.AddScoped<ReadingService>();
+
+            IMapper mapper = new MapperConfiguration(config =>
+            {
                 config.AddProfile<AutoMapperProfile>();
             }).CreateMapper();
             services.AddSingleton(mapper);
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,7 +3,7 @@ using iread_interaction_ms.DataAccess.Interface;
 
 namespace iread_interaction_ms.DataAccess.Repository
 {
-    public class PublicRepository:IPublicRepository
+    public class PublicRepository : IPublicRepository
     {
         private readonly AppDbContext _context;
         private IInteractionRepo _interactionRepo;
@@ -11,15 +11,17 @@ namespace iread_interaction_ms.DataAccess.Repository
         private ICommentRepository _commentRepository;
         private IHighLightRepository _highLightRepository;
         private IDrawingRepository _drawingRepository;
+        private IReadingRepository _readingRepository;
 
-        
+
 
         public PublicRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public IInteractionRepo GetInteractionRepo {
+        public IInteractionRepo GetInteractionRepo
+        {
             get
             {
                 return _interactionRepo ??= new InteractionRepo(_context);
@@ -56,5 +58,12 @@ namespace iread_interaction_ms.DataAccess.Repository
             }
         }
 
+        public IReadingRepository GetReadingRepo
+        {
+            get
+            {
+                return _readingRepository ??= new ReadingRepository(_context);
+            }
+        }
     }
 }

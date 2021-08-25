@@ -8,6 +8,8 @@ namespace iread_interaction_ms.DataAccess.Interface
         ICommentRepository GetCommentsRepo { get; }
         IDrawingRepository GetDrawingRepo { get; }
         IHighLightRepository GetHighLightRepo { get; }
+        IReadingRepository GetReadingRepo { get; }
+
 
     }
 }

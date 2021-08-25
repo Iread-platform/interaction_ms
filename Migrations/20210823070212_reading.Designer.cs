@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iread_interaction_ms.DataAccess.Data;
 
 namespace iread_interaction_ms.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210823070212_reading")]
+    partial class reading
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,12 +182,6 @@ namespace iread_interaction_ms.Migrations
 
                     b.Property<int>("InteractionId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<TimeSpan>("TimeSpent")
-                        .HasColumnType("time");
 
                     b.HasKey("ReadingId");
 
