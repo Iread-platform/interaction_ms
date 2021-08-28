@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.Web.Dto.ReadingDto;
+using iread_interaction_ms.Web.DTO.StoryDto;
 
 namespace iread_interaction_ms.DataAccess.Interface
 {
@@ -21,5 +22,6 @@ namespace iread_interaction_ms.DataAccess.Interface
         public Task<Reading> GetByInteractionId(int id);
         public Task<List<Reading>> GetByPageId(int pageId);
         public Task<List<ReadingWithProgressDto>> GetCountOfReadedPagesForEachMyStory(string studentId);
+        public Task<List<StoryDto>> GetReadingStoryIds(string studentId);
     }
 }

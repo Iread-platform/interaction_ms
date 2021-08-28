@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using iread_interaction_ms.Web.Dto.ReadingDto;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -94,6 +95,22 @@ namespace iread_interaction_ms.Web.Controller
             }
             await AddStoryDetialsToReading(readings);
             return Ok(readings);
+        }
+
+        [HttpGet("my-reading-stories")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
+        public async Task<IActionResult> GetMyReadingStoryIds()
+        {
+            string myId = User.Claims.Where(c => c.Type == "sub")
+                            .Select(c => c.Value).SingleOrDefault();
+            List<StoryDto> readingsStoryIds = await _readingService.GetReadingStoryIds(myId);
+            if (readingsStoryIds == null || !readingsStoryIds.Any())
+            {
+                return NotFound();
+            }
+            return Ok(readingsStoryIds);
         }
 
         private async Task AddStoryDetialsToReading(List<ReadingWithProgressDto> readings)

@@ -5,6 +5,7 @@ using AutoMapper;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 using iread_interaction_ms.Web.Dto.ReadingDto;
+using iread_interaction_ms.Web.DTO.StoryDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.Web.Service
@@ -59,6 +60,11 @@ namespace iread_interaction_ms.Web.Service
         {
 
             return await _publicRepository.GetReadingRepo.GetCountOfReadedPagesForEachMyStory(studentId);
+        }
+
+        internal async Task<List<StoryDto>> GetReadingStoryIds(string studentId)
+        {
+            return await _publicRepository.GetReadingRepo.GetReadingStoryIds(studentId);
         }
     }
 }

@@ -6,6 +6,7 @@ using iread_interaction_ms.DataAccess.Data;
 using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 using iread_interaction_ms.Web.Dto.ReadingDto;
+using iread_interaction_ms.Web.DTO.StoryDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace iread_interaction_ms.DataAccess.Repository
@@ -73,5 +74,14 @@ namespace iread_interaction_ms.DataAccess.Repository
                     .ToListAsync();
         }
 
+        public async Task<List<StoryDto>> GetReadingStoryIds(string studentId)
+        {
+            return await _context.Readings
+                  .Include(r => r.Interaction)
+                  .Where(r => r.Interaction.StudentId == studentId)
+                  .GroupBy(r => r.Interaction.StoryId)
+                  .Select(r => new StoryDto { StoryId = r.Key })
+                  .ToListAsync();
+        }
     }
 }

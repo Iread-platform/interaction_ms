@@ -8,7 +8,9 @@ using iread_interaction_ms.DataAccess.Interface;
 using iread_interaction_ms.DataAccess.Repository;
 using iread_interaction_ms.Web.Profile;
 using iread_interaction_ms.Web.Service;
+using iread_interaction_ms.Web.Util;
 using iread_story.Web.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +44,15 @@ namespace iread_interaction_ms
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "_myAllowSpecificOrigins", builder =>
+                     builder
+                         .AllowAnyOrigin()
+                         .AllowAnyMethod()
+                         .AllowAnyHeader());
+            });
 
             // for routing
             services.AddControllers();
@@ -98,6 +109,36 @@ namespace iread_interaction_ms
             services.AddSingleton(mapper);
 
 
+            // for protected APIs
+            services.AddAuthentication("Bearer")
+            .AddIdentityServerAuthentication("Bearer", options =>
+            {
+                options.ApiName = "api1";
+                options.Authority = "http://192.168.1.118:5015";
+                options.RequireHttpsMetadata = false;
+            });
+
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy(Policies.Administrator, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireScope(Policies.Administrator);
+                });
+                options.AddPolicy(Policies.Teacher, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireScope(Policies.Teacher);
+                });
+                options.AddPolicy(Policies.Student, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireScope(Policies.Student);
+                });
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,7 +160,8 @@ namespace iread_interaction_ms
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors("_myAllowSpecificOrigins");
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
