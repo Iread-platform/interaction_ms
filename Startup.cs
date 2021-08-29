@@ -110,11 +110,14 @@ namespace iread_interaction_ms
 
 
             // for protected APIs
+            var provider = services.BuildServiceProvider();
+            var consulHttpClientService = provider.GetRequiredService<IConsulHttpClientService>();
+            var identityService = consulHttpClientService.GetAgentService("identity_ms");
             services.AddAuthentication("Bearer")
             .AddIdentityServerAuthentication("Bearer", options =>
             {
                 options.ApiName = "api1";
-                options.Authority = "http://192.168.1.118:5015";
+                options.Authority = "http://" + identityService.Address + ":" + identityService.Port;
                 options.RequireHttpsMetadata = false;
             });
 
