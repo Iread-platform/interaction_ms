@@ -226,5 +226,28 @@ namespace iread_interaction_ms.Web.Service
             return JsonConvert.DeserializeObject<T>(content);
         }
 
+        public AgentService GetAgentService(string serviceName)
+        {
+
+            //Get all services registered on Consul
+            var allRegisteredServices = _consulClient.Agent.Services().Result;
+
+            //Get all instance of the service went to send a request to
+            var registeredServices = allRegisteredServices.Response?.Where(s => s.Value.Service.Equals(serviceName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).ToList();
+
+            if (registeredServices.Count < 1)
+            {
+                throw new Exception($"Consul service: '{serviceName}' was not found.");
+            }
+            //Get a random instance of the service
+            var service = GetRandomInstance(registeredServices, serviceName);
+
+            if (service == null)
+            {
+                throw new Exception($"Consul service: '{serviceName}' was not found.");
+            }
+
+            return service;
+        }
     }
 }
