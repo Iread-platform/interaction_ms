@@ -59,5 +59,16 @@ namespace iread_interaction_ms.Web.Service
         {
             return await _publicRepository.GetHighLightRepo.GetByPageId(pageId);
         }
+
+        internal async Task<List<List<HighLight>>> GetByPagesIds(List<int> pagesIdsAsIntlist)
+        {
+            List<List<HighLight>> res = new List<List<HighLight>>();
+
+            foreach (int pageId in pagesIdsAsIntlist)
+            {
+                res.Add(await _publicRepository.GetHighLightRepo.GetByPageId(pageId));
+            }
+            return res;
+        }
     }
 }
