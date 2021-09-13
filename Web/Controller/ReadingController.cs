@@ -100,7 +100,7 @@ namespace iread_interaction_ms.Web.Controller
         [HttpGet("my-reading-stories")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetMyReadingStoryIds()
         {
             string myId = User.Claims.Where(c => c.Type == "sub")
