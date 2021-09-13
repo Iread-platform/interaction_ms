@@ -164,7 +164,7 @@ namespace iread_interaction_ms
 
             app.UseRouting();
             app.UseCors("_myAllowSpecificOrigins");
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
