@@ -24,6 +24,7 @@ namespace iread_interaction_ms.Web.Controller
         private readonly DrawingService _drawingService;
         private readonly InteractionsService _interactionServices;
         private readonly IConsulHttpClientService _consulHttpClient;
+        private readonly string _attachmentsMs = "attachment_ms";
 
         public DrawingController(DrawingService drawingService, IMapper mapper, InteractionsService interactionServices, IConsulHttpClientService consulHttpClient)
         {
@@ -157,6 +158,7 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             _drawingService.Delete(drawing);
+            _consulHttpClient.Delete(_attachmentsMs, $"/api/Attachment/{drawing.AudioId}/delete");
             return NoContent();
         }
 

@@ -159,6 +159,7 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             _audioService.Delete(audio);
+            _consulHttpClient.Delete(_attachmentsMs, $"/api/Attachment/{audio.AttachmentId}/delete");
             return NoContent();
         }
 

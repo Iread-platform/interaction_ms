@@ -11,11 +11,11 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int AudioId { get; set; }
-        
+
         [Required]
         public int InteractionId { get; set; }
         public Interaction Interaction { get; set; }
-        
+
         [Required]
         public int AttachmentId { get; set; }
 

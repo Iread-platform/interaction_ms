@@ -12,6 +12,7 @@ using iread_interaction_ms.Web.Dto;
 using iread_interaction_ms.DataAccess.Data.Type;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -78,6 +79,25 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             return Ok(_mapper.Map<List<HighLightDto>>(highLights));
+        }
+
+        // Post: api/interaction/highLight/get-by-pages
+        [HttpPost("get-by-pages")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByPages([FromForm] string pagesIds)
+        {
+            string[] idsAsStringArray = pagesIds.Split(",");
+            int[] idsAsIntArray = Array.ConvertAll(idsAsStringArray, s => int.Parse(s));
+            List<int> pagesIdsAsIntlist = idsAsIntArray.OfType<int>().ToList();
+            List<List<HighLight>> res = await _highLightService.GetByPagesIds(pagesIdsAsIntlist);
+
+            if (res == null || !res.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<List<List<HighLightDto>>>(res));
         }
 
 

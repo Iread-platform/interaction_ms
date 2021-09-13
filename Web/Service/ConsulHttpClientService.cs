@@ -249,5 +249,14 @@ namespace iread_interaction_ms.Web.Service
 
             return service;
         }
+
+        public async Task<bool> Delete(string serviceName, string requestUri)
+        {
+            var uri = GetRequestUriAsync(serviceName, requestUri).Result;
+
+            var response = await _client.DeleteAsync(uri);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }
