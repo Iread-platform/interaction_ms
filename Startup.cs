@@ -90,7 +90,7 @@ namespace iread_interaction_ms
             // for swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "iread_school_ms", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "iread_interaction", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description =
