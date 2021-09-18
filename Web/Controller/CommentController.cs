@@ -12,6 +12,7 @@ using iread_interaction_ms.Web.DTO.Story;
 using iread_interaction_ms.Web.Dto;
 using iread_interaction_ms.Web.DTO.StoryDto;
 using System.Linq;
+using System;
 
 namespace iread_interaction_ms.Web.Controller
 {
@@ -80,6 +81,25 @@ namespace iread_interaction_ms.Web.Controller
             return Ok(_mapper.Map<List<CommentDto>>(comments));
         }
 
+
+        // Post: api/interaction/comment/get-by-pages
+        [HttpPost("get-by-pages")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByPages([FromForm] string pagesIds)
+        {
+            string[] idsAsStringArray = pagesIds.Split(",");
+            int[] idsAsIntArray = Array.ConvertAll(idsAsStringArray, s => int.Parse(s));
+            List<int> pagesIdsAsIntlist = idsAsIntArray.OfType<int>().ToList();
+            List<List<Comment>> res = await _commentsService.GetByPagesIds(pagesIdsAsIntlist);
+
+            if (res == null || !res.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<List<List<CommentDto>>>(res));
+        }
 
         //POST: api/interaction/comment/add
         [HttpPost("add")]
