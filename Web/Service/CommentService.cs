@@ -59,5 +59,16 @@ namespace iread_interaction_ms.Web.Service
         {
             return await _publicRepository.GetCommentsRepo.GetByPageId(pageId);
         }
+
+        public async Task<List<List<Comment>>> GetByPagesIds(List<int> pagesIdsAsIntlist)
+        {
+            List<List<Comment>> res = new List<List<Comment>>();
+
+            foreach (int pageId in pagesIdsAsIntlist)
+            {
+                res.Add(await _publicRepository.GetCommentsRepo.GetByPageId(pageId));
+            }
+            return res;
+        }
     }
 }
