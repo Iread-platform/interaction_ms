@@ -40,6 +40,12 @@ namespace iread_interaction_ms.DataAccess.Repository
         {
             return _context.Audios.Any(a => a.AudioId == id);
         }
+        public bool Exists(int pageId , int storyId, string userId)
+        {
+            return _context.Audios.Include(a => a.Interaction).Any(a =>
+                a.Interaction.PageId == pageId && a.Interaction.StoryId == storyId &&
+                a.Interaction.StudentId == userId);
+        }
 
         public void Update(Audio audio, Audio oldAudio)
         {

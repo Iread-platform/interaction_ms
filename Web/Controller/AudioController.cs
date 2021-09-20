@@ -207,6 +207,11 @@ namespace iread_interaction_ms.Web.Controller
                     ModelState.AddModelError("StudentId", "User not a student");
                 }
             }
+
+            if (_audioService.Exists(audio.Interaction.PageId, audio.Interaction.StoryId, userDto.Id))
+            {
+                ModelState.AddModelError("Audio", "Audio interaction already exists.");
+            }
         }
 
         private void ValidationLogicForUpdating(Audio audio)

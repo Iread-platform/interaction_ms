@@ -58,5 +58,10 @@ namespace iread_interaction_ms.Web.Service
         {
             return await _publicRepository.GetAudioRepo.GetByPageId(pageId);
         }
+
+        public bool Exists(int interactionPageId, int interactionStoryId, string userDtoId)
+        {
+            return _publicRepository.GetAudioRepo.Exists(interactionPageId, interactionStoryId, userDtoId);
+        }
     }
 }
