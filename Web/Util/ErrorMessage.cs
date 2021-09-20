@@ -14,7 +14,9 @@ namespace iread_interaction_ms.Web.Util
         public const String INVALID_Interaction_ID_VALUE = "Invalid interaction id value.";
         public const String INVALID_Comment_ID_VALUE = "Invalid comment id value.";
         public const String Audio_ID_IS_REQUIRED = "Audio id is required.";
+        public const String PAGE_ID_REQUIRED = "Page id is required.";
         public const String INVALID_Audio_ID_VALUE = "Invalid audio id value.";
+        public const String INVALID_PAGE_ID_VALUE = "Invalid page id value.";
         public const String FILE_EXTENSION_NOT_ALLOWED = "File extension is not allowed!.";
 
 
