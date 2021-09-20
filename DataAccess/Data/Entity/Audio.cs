@@ -18,9 +18,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
 
         [Required]
         public int AttachmentId { get; set; }
-
-        [Required]
-        public int PageId { get; set; }
         
     }
 }

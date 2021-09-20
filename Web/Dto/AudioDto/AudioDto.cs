@@ -15,7 +15,6 @@ namespace iread_interaction_ms.Web.Dto.AudioDto
         
         public int AttachmentId { get; set; }
         
-        public int PageId { get; set; }
 
     }
 }

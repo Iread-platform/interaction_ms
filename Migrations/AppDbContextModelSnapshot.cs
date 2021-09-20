@@ -29,9 +29,6 @@ namespace iread_interaction_ms.Migrations
                     b.Property<int>("InteractionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PageId")
-                        .HasColumnType("int");
-
                     b.HasKey("AudioId");
 
                     b.HasIndex("InteractionId");

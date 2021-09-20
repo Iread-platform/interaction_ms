@@ -9,8 +9,8 @@ using iread_interaction_ms.DataAccess.Data;
 namespace iread_interaction_ms.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210920122702_Chanege-audio-interaction-to-per-page")]
-    partial class Chanegeaudiointeractiontoperpage
+    [Migration("20210920123934_removeWordFromAudio")]
+    partial class removeWordFromAudio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,6 @@ namespace iread_interaction_ms.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("InteractionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PageId")
                         .HasColumnType("int");
 
                     b.HasKey("AudioId");

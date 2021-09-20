@@ -2,7 +2,7 @@
 
 namespace iread_interaction_ms.Migrations
 {
-    public partial class Chanegeaudiointeractiontoperpage : Migration
+    public partial class removeWordFromAudio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,21 +21,10 @@ namespace iread_interaction_ms.Migrations
             migrationBuilder.DropColumn(
                 name: "FirstWordIndex",
                 table: "Audios");
-
-            migrationBuilder.AddColumn<int>(
-                name: "PageId",
-                table: "Audios",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "PageId",
-                table: "Audios");
-
             migrationBuilder.AddColumn<string>(
                 name: "EndWord",
                 table: "Audios",
