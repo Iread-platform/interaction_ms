@@ -13,6 +13,8 @@ namespace iread_interaction_ms.DataAccess.Interface
         public void Delete(int id);
 
         public bool Exists(int id);
+        public bool Exists(int attachmentId, int pageId, int storyId, string userId);
+        public bool Exists(int pageId , int storyId, string userId);
 
         public Task<Audio> GetByInteractionId(int id);
 

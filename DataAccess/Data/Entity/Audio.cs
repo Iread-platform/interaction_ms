@@ -18,10 +18,6 @@ namespace iread_interaction_ms.DataAccess.Data.Entity
 
         [Required]
         public int AttachmentId { get; set; }
-
-        public Nullable<int> FirstWordIndex { get; set; }
-        public Nullable<int> EndWordIndex { get; set; }
-        public string FirstWord { get; set; }
-        public string EndWord { get; set; }
+        
     }
 }

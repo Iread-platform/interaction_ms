@@ -132,7 +132,7 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             Audio audioEntity = _mapper.Map<Audio>(audio);
-            ValidationLogicForUpdating(audioEntity);
+            ValidationLogicForUpdating(audioEntity, oldAudio);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ErrorMessage.ModelStateParser(ModelState));
@@ -207,9 +207,14 @@ namespace iread_interaction_ms.Web.Controller
                     ModelState.AddModelError("StudentId", "User not a student");
                 }
             }
+
+            if (_audioService.Exists(audio.Interaction.PageId, audio.Interaction.StoryId, userDto.Id))
+            {
+                ModelState.AddModelError("Audio", "Audio interaction already exists.");
+            }
         }
 
-        private void ValidationLogicForUpdating(Audio audio)
+        private void ValidationLogicForUpdating(Audio audio, Audio oldAudio)
         {
             AttachmentDTO attachmentDto = _consulHttpClient.GetAsync<AttachmentDTO>("attachment_ms", $"/api/Attachment/get/{audio.AttachmentId}").Result;
 
@@ -222,6 +227,15 @@ namespace iread_interaction_ms.Web.Controller
                 if (!AudioExtensions.All.Contains(attachmentDto.Extension.ToLower()))
                 {
                     ModelState.AddModelError("Audio", "Audio not have valid extension, should be one of [" + string.Join(",", AudioExtensions.All) + "]");
+                }
+            }
+
+            if (oldAudio.AttachmentId != audio.AttachmentId)
+            {
+                if (_audioService.Exists(audio.AttachmentId ,oldAudio.Interaction.PageId, oldAudio.Interaction.StoryId,
+                    oldAudio.Interaction.StudentId))
+                {
+                    ModelState.AddModelError("Audio", "Audio interaction already exists.");
                 }
             }
         }
