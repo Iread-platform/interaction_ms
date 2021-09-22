@@ -30,6 +30,17 @@ namespace iread_interaction_ms.DataAccess.Data
            .HasOne(d => d.Interaction)
            .WithMany(i => i.Drawings)
            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Audio>()
+             .HasOne(c => c.Interaction)
+             .WithMany(i => i.Audios)
+             .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<HighLight>()
+                        .HasOne(c => c.Interaction)
+                        .WithMany(i => i.HighLights)
+                        .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         //entities

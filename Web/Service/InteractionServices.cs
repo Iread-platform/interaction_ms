@@ -15,18 +15,13 @@ namespace iread_interaction_ms.Web.Service
         {
             _publicRepository = publicRepository;
         }
-        
-        public async Task<Interaction> GetInteractionById(int id)
+
+
+        public async Task<Interaction> GetById(int id)
         {
             return await _publicRepository.GetInteractionRepo.GetById(id);
         }
 
-
-         public async Task<Interaction> GetById(int id)
-        {
-            return await _publicRepository.GetInteractionRepo.GetById(id);
-        }
-        
         public bool Insert(Interaction interaction)
         {
             try
@@ -42,7 +37,7 @@ namespace iread_interaction_ms.Web.Service
 
         public async Task<List<Interaction>> GetByPageId(int pageId)
         {
-             return await _publicRepository.GetInteractionRepo.GetByPageId(pageId);
+            return await _publicRepository.GetInteractionRepo.GetByPageId(pageId);
         }
     }
 }

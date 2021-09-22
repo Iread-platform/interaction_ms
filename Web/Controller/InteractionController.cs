@@ -27,7 +27,7 @@ namespace iread_interaction_ms.Web.Controller
 
         private readonly ILogger<InteractionController> _logger;
         private readonly InteractionsService _interactionsService;
-       
+
         private readonly IMapper _mapper;
         public InteractionController(ILogger<InteractionController> logger,
         InteractionsService interactionsService, IPublicRepository repository, IMapper mapper)
@@ -41,7 +41,7 @@ namespace iread_interaction_ms.Web.Controller
         [HttpGet("get-by-page/{pageId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByInteractionId([FromRoute]int pageId)
+        public async Task<IActionResult> GetByInteractionId([FromRoute] int pageId)
         {
             List<Interaction> interactions = await _interactionsService.GetByPageId(pageId);
 
@@ -51,10 +51,27 @@ namespace iread_interaction_ms.Web.Controller
             }
 
             return Ok(_mapper.Map<List<InteractionDto>>(interactions));
-            
+
+        }
+
+        // GET: api/interaction/get/1
+        [HttpGet("{id}/get")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            Interaction interaction = await _interactionsService.GetById(id);
+
+            if (interaction == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<GeneralInteractionDto>(interaction));
+
         }
 
 
-        
+
     }
 }

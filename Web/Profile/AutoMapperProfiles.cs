@@ -83,6 +83,27 @@ namespace iread_interaction_ms.Web.Profile
             CreateMap<Reading, ReadingWithProgressDto>().ReverseMap();
 
 
+            CreateMap<Drawing, InnerDrawingDto>();
+            CreateMap<HighLight, InnerHighLightDto>();
+            CreateMap<Audio, InnerAudioDto>();
+            CreateMap<Comment, InnerCommentDto>();
+
+            CreateMap<Interaction, GeneralInteractionDto>()
+       .ForMember(dest =>
+           dest.Comment,
+           opt => opt.MapFrom(src => src.Comments.Count > 0 ? src.Comments[0] : null))
+       .ForMember(dest =>
+           dest.Drawing,
+           opt => opt.MapFrom(src => src.Drawings.Count > 0 ? src.Drawings[0] : null))
+       .ForMember(dest =>
+           dest.Audio,
+           opt => opt.MapFrom(src => src.Audios.Count > 0 ? src.Audios[0] : null))
+       .ForMember(dest =>
+           dest.HighLight,
+           opt => opt.MapFrom(src => src.HighLights.Count > 0 ? src.HighLights[0] : null));
+
+
+
         }
     }
 }
