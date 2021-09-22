@@ -6,8 +6,9 @@ using iread_interaction_ms.DataAccess.Data.Entity;
 using iread_interaction_ms.DataAccess.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace iread_interaction_ms.DataAccess.Repository{
-     class InteractionRepo: IInteractionRepo
+namespace iread_interaction_ms.DataAccess.Repository
+{
+    class InteractionRepo : IInteractionRepo
     {
         private readonly AppDbContext _context;
 
@@ -18,7 +19,13 @@ namespace iread_interaction_ms.DataAccess.Repository{
 
         public async Task<Interaction> GetById(int id)
         {
-        return await _context.Interactions.FindAsync(id);
+            return await _context.Interactions
+            .Include(i => i.Drawings)
+            .Include(i => i.Comments)
+            .Include(i => i.HighLights)
+            .Include(i => i.Audios)
+            .Where(i => i.InteractionId == id)
+            .SingleOrDefaultAsync();
         }
 
         public void Update(int id, Interaction interaction)
@@ -27,13 +34,13 @@ namespace iread_interaction_ms.DataAccess.Repository{
             _context.SaveChanges();
         }
 
-        public async void  Insert(Interaction interaction)  
+        public async void Insert(Interaction interaction)
         {
             await _context.Interactions.AddAsync(interaction);
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Interaction>  Get()
+        public IEnumerable<Interaction> Get()
         {
             return _context.Interactions.AsEnumerable();
         }
@@ -51,7 +58,7 @@ namespace iread_interaction_ms.DataAccess.Repository{
 
         public Task<List<Interaction>> GetByPageId(int pageId)
         {
-            return _context.Interactions.Where(i=> i.PageId == pageId).Include(i => i.Comments).ToListAsync();
+            return _context.Interactions.Where(i => i.PageId == pageId).Include(i => i.Comments).ToListAsync();
         }
     }
 }
